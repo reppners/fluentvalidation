@@ -5,9 +5,11 @@ using System.Text;
 
 namespace FluentValidation
 {
+    /// <summary>
+    /// A place holder for assumption validations. Provides support for the Fluent Validation library and not intended to be used directly.
+    /// </summary>
     public sealed class AssumptionValidation : Validation 
     {
-
     }
 
 }

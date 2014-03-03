@@ -5,6 +5,9 @@ using System.Text;
 
 namespace FluentValidation
 {
+    /// <summary>
+    /// The base class for various validation state objects and place holders.  Provides support for the Fluent Validation library and not intended to be used directly.
+    /// </summary>
     public abstract class Validation
     {
         internal Exception Exception { get; private set; }

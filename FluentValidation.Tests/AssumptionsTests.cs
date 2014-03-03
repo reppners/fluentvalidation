@@ -22,12 +22,12 @@ namespace FluentValidation.Tests
                                   .IsNull(() => (int?)null)
                                   .IsNotNull(() => (int?)5)
 
-                                  .IsNotNullOrEmpty("d")
-                                  .IsNotNullOrEmpty(new int[] { 1, 2, 3 })
+                                  .IsNotNullOrEmpty(() => "d")
+                                  .IsNotNullOrEmpty(() => new int[] { 1, 2, 3 })
 
-                                  .Is<string>("test")
+                                  .IsType<string>(() => "test")
 
-                                  .ServicePresent("test")
+                                  .ServicePresent(() => "test")
 
                                   .Check();
         }

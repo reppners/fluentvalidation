@@ -5,23 +5,46 @@ using System.Text;
 
 namespace FluentValidation
 {
+    /// <summary>
+    /// The starting location for the Fluent Validation API.
+    /// </summary>
     public static class Validate
     {
+        /// <summary>
+        /// Begins a new Argument validation.
+        /// </summary>
+        /// <typeparam name="TArgType">The type of the argument being validated.</typeparam>
+        /// <param name="value">The value of the argument being validated.</param>
+        /// <param name="paramName">The name of the parameter being validated. Optional.</param>
+        /// <returns>A new <see cref="ArgumentValidation{TArgType}"/> instance.</returns>
         public static ArgumentValidation<TArgType> Argument<TArgType>(TArgType value, string paramName = null)
         {
             return new ArgumentValidation<TArgType>(paramName, value);
         }
 
+        /// <summary>
+        /// Begins a new State validation.
+        /// </summary>
+        /// <typeparam name="T">The type of the object being validated.</typeparam>
+        /// <param name="objectToValidate">The object to be validated.</param>
+        /// <returns>A new <see cref="StateValidation{T}"/> instance.</returns>
         public static StateValidation<T> State<T>(T objectToValidate)
         {
             return new StateValidation<T>(objectToValidate);
         }
 
+        /// <summary>
+        /// Begins a new Assumptions validation.
+        /// </summary>
+        /// <returns>A null place holder.</returns>
         public static AssumptionValidation Assumptions()
         {
             return null;
         }
     }
 
+    /// <summary>
+    /// A place holder for subsequent validation checks.  Provides support for the Fluent Validation library and not intended to be used directly. 
+    /// </summary>
     public interface IValidation { }
 }
