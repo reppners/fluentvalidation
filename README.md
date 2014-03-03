@@ -1,7 +1,7 @@
 FluentValidation
 ================
 
-*A Fluent API for Input and State Validation.*
+*A Fluent API for Input, State amd Assumption Validation.*
 
 Based on the [Validation][1] library by Andrew Arnott, and a [Blog][2] by Rick Brewster.
 
