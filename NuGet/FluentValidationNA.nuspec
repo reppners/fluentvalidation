@@ -8,7 +8,8 @@
         <projectUrl>https://github.com/NArnott/fluentvalidation</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>A fluent API for input, state and assumption validation.</description>
-        <releaseNotes>v0.0.1 Initial Release</releaseNotes>
+        <releaseNotes>v0.0.2 Added intellisense documentation.
+v0.0.1 Initial Release</releaseNotes>
         <copyright>Copyright (c) Nathan Arnott 2014</copyright>
         <language>en-US</language>
         <tags>Validation InputValidation IntegrityCheck FluentValidation</tags>
