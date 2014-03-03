@@ -1,0 +1,57 @@
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Text;
+
+namespace FluentValidation
+{
+    static class Helpers
+    {
+        public static string FormatError(string format, params object[] arguments)
+        {
+            return String.Format(CultureInfo.CurrentCulture, format, arguments);
+        }
+
+        /// <summary>
+        /// Trims away a given surrounding type, returning just the generic type argument,
+        /// if the given type is in fact a generic type with just one type argument and
+        /// the generic type matches a given wrapper type.  Otherwise, it returns the original type.
+        /// </summary>
+        /// <param name="type">The type to trim, or return unmodified.</param>
+        /// <param name="wrapper">The SomeType&lt;&gt; generic type definition to trim away from <paramref name="type"/> if it is present.</param>
+        /// <returns><paramref name="type"/>, if it is not a generic type instance of <paramref name="wrapper"/>; otherwise the type argument.</returns>
+        internal static Type TrimGenericWrapper(Type type, Type wrapper)
+        {
+            Type[] typeArgs;
+            if (type.IsGenericType && type.GetGenericTypeDefinition() == wrapper && (typeArgs = type.GetGenericArguments()).Length == 1)
+            {
+                return typeArgs[0];
+            }
+            else
+            {
+                return type;
+            }
+        }
+
+
+        public static bool IsEnumEmpty(this IEnumerable enumerable)
+        {
+            if (enumerable is ICollection)
+            {
+                return ((ICollection)enumerable).Count == 0;
+            }
+            else
+            {
+                foreach (object element in enumerable)
+                {
+                    //we are here, so there must be elements
+                    return false;
+                }
+
+                return true;
+            }
+        }
+    }
+}
