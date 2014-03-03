@@ -1,5 +1,5 @@
-FluentValidation
-================
+Fluent Validation Library
+=========================
 
 *A Fluent API for Input, State amd Assumption Validation.*
 
