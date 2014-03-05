@@ -32,7 +32,7 @@ namespace FluentValidation
         /// <returns>A <c>null</c> placeholder.</returns>
         public static IValidation Check<TArgType>(this ArgumentValidation<TArgType> validation)
         {
-            var exception = validation.Check();
+            var exception = validation.BaseCheck();
 
             if (exception != null) throw exception;
 

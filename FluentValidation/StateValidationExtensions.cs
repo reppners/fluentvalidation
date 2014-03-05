@@ -30,7 +30,7 @@ namespace FluentValidation
         /// <returns>A <c>null</c> placeholder.</returns>
         public static IValidation Check<T>(this StateValidation<T> validation)
         {
-            var exception = validation.Check();
+            var exception = validation.BaseCheck();
 
             if (exception != null) throw exception;
 

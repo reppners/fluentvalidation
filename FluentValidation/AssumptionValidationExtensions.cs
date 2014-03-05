@@ -31,7 +31,7 @@ namespace FluentValidation
         {
             if (validation != null)
             {
-                var exception = validation.Check();
+                var exception = validation.BaseCheck();
 
                 if (exception != null)
                 {

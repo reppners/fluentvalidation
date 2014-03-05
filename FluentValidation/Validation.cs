@@ -40,7 +40,7 @@ namespace FluentValidation
             Exception = null;
         }
 
-        internal Exception Check()
+        internal Exception BaseCheck()
         {
             NewClause(true);
 
