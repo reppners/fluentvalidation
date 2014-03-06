@@ -195,6 +195,26 @@ namespace FluentValidation.Tests
             Helpers.ExpectException<ArgumentException>(fail5);
         }
 
+        [TestMethod]
+        public void Argument_FootprintTest()
+        {
+            
+            //set these to zero since previous tests may have moved them.
+            ArgumentValidationCounter.MissingCount = 0;
+            ArgumentValidationCounter.CreationCount = 0;
+
+            Argument_ComplexTest();
+
+            Assert.AreEqual(0, ArgumentValidationCounter.MissingCount);
+
+            var createCount = ArgumentValidationCounter.CreationCount;
+
+            for (int i = 0; i < 100; i++) Argument_ComplexTest();
+
+            Assert.AreEqual(createCount, ArgumentValidationCounter.CreationCount);
+            Assert.AreEqual(0, ArgumentValidationCounter.MissingCount);
+        }
+
         static void ComplexFunction(
             string cannotBeNullStr, 
             string cannotBeEmptyStr, 

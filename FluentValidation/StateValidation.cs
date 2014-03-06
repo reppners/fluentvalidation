@@ -11,20 +11,44 @@ namespace FluentValidation
     /// <typeparam name="T">The type of the object being validated.</typeparam>
     public sealed class StateValidation<T> : Validation
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="StateValidation{T}"/> class.
-        /// </summary>
-        /// <param name="obj">The object to be validated.</param>
-        public StateValidation(T obj)
-        {
-            if (obj == null) throw new ArgumentNullException("obj");
+        [ThreadStatic]
+        static Queue<StateValidation<T>> _validationPool = new Queue<StateValidation<T>>();
 
-            Object = obj;
-        }
-        
+        private StateValidation() { }
+
+
         /// <summary>
         /// The object being validated.
         /// </summary>
         public T Object { get; private set; }
+
+
+        internal static StateValidation<T> Borrow(T obj)
+        {
+            StateValidation<T> valObj;
+
+            if (_validationPool.Count > 0)
+            {
+                valObj = _validationPool.Dequeue();
+            }
+            else
+            {
+                valObj = new StateValidation<T>();
+            }
+
+            valObj.Object = obj;
+
+            return valObj;
+        }
+
+        internal void Return()
+        {
+            Object = default(T);
+
+            Clear();
+
+            _validationPool.Enqueue(this);
+        }
+
     }
 }

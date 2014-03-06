@@ -19,7 +19,7 @@ namespace FluentValidation
         /// <returns>A new <see cref="StateValidation{T}"/> instance.</returns>
         public static StateValidation<T> State<T>(this IValidation validation, T objectToValidate)
         {
-            return new StateValidation<T>(objectToValidate);
+            return StateValidation<T>.Borrow(objectToValidate);
         }
 
         /// <summary>
@@ -31,6 +31,8 @@ namespace FluentValidation
         public static IValidation Check<T>(this StateValidation<T> validation)
         {
             var exception = validation.BaseCheck();
+
+            validation.Return();
 
             if (exception != null) throw exception;
 

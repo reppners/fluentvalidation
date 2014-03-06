@@ -16,7 +16,7 @@ namespace FluentValidation
         {
             if (validation == null) return true;
 
-            return validation.Exception == null;
+            return !validation.HasException;
         }
 
         #endregion

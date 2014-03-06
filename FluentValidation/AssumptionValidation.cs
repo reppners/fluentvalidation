@@ -10,6 +10,7 @@ namespace FluentValidation
     /// </summary>
     public sealed class AssumptionValidation : Validation 
     {
+        internal AssumptionValidation() { }
     }
 
 }

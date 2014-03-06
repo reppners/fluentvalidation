@@ -15,23 +15,26 @@ namespace FluentValidation.Profiler
 
             for (int i = 0; i < 10000; i++)
             {
-                ComplexFunction("", " ", 5, null, "A");
+                //SimpleArgumentTest();
+                //OrArgumentTest();
+                SimpleStateTest();
             }
         }
 
-        static void ComplexFunction(
-            string cannotBeNullStr,
-            string cannotBeEmptyStr,
-            int mustBeGreaterThanZero,
-            double? mustBeLessThanZeroOrNull,
-            string mustBeAllCaps)
+        static void SimpleArgumentTest()
         {
-            Validate.Argument(cannotBeNullStr, "cannotBeNullStr").IsNotNull().Check()
-                    .Argument(cannotBeEmptyStr, "cannotBeEmptyStr").IsNotNullOrEmpty().Check()
-                    .Argument(mustBeGreaterThanZero, "mustBeGreaterThanZero").Range(v => v > 0).Check()
-                    .Argument(mustBeLessThanZeroOrNull, "mustBeLessThanZeroOrNull").Range(v => v < 0).Or().IsNull().Check();
-                    //.Argument(mustBeAllCaps, "mustBeAllCaps").That(s => s.ToUpper() == s, "Value must be all caps").Check();
-
+            Validate.Argument("string", "string").That(str => true, "msg").Check();
         }
+
+        static void SimpleStateTest()
+        {
+            Validate.State("test").NotDisposed( str => true ).Operation( str => true ).Check();
+        }
+
+        static void OrArgumentTest()
+        {
+            Validate.Argument("string", "string").IsNotNull().Or().IsNotNull().Check();
+        }
+
     }
 }

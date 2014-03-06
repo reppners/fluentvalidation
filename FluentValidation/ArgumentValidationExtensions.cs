@@ -11,6 +11,7 @@ namespace FluentValidation
     /// </summary>
     public static class ArgumentValidationExtensions
     {
+
         /// <summary>
         /// Begins a new Argument validation.
         /// </summary>
@@ -21,8 +22,9 @@ namespace FluentValidation
         /// <returns>A new <see cref="ArgumentValidation{TArgType}"/> instance.</returns>
         public static ArgumentValidation<TArgType> Argument<TArgType>(this IValidation validation, TArgType value, string paramName = null)
         {
-            return new ArgumentValidation<TArgType>(paramName, value);
+            return ArgumentValidation<TArgType>.Borrow(paramName, value);
         }
+
 
         /// <summary>
         /// Performs the validation for the current argument.
@@ -34,10 +36,13 @@ namespace FluentValidation
         {
             var exception = validation.BaseCheck();
 
+            validation.Return();
+
             if (exception != null) throw exception;
 
             return null;
         }
+
 
         #region Null Values
 

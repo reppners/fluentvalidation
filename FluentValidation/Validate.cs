@@ -19,7 +19,7 @@ namespace FluentValidation
         /// <returns>A new <see cref="ArgumentValidation{TArgType}"/> instance.</returns>
         public static ArgumentValidation<TArgType> Argument<TArgType>(TArgType value, string paramName = null)
         {
-            return new ArgumentValidation<TArgType>(paramName, value);
+            return ArgumentValidation<TArgType>.Borrow(paramName, value);
         }
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace FluentValidation
         /// <returns>A new <see cref="StateValidation{T}"/> instance.</returns>
         public static StateValidation<T> State<T>(T objectToValidate)
         {
-            return new StateValidation<T>(objectToValidate);
+            return StateValidation<T>.Borrow(objectToValidate);
         }
 
         /// <summary>
