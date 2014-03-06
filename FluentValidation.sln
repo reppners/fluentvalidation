@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentValidation", "FluentV
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentValidation.Tests", "FluentValidation.Tests\FluentValidation.Tests.csproj", "{F6FE30BD-5A5A-43BD-AAAF-F11E95B8D083}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentValidation.Profiler", "FluentValidation.Profiler\FluentValidation.Profiler.csproj", "{087831EB-6849-4C02-939B-19B09AE70514}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -20,9 +22,15 @@ Global
 		{F6FE30BD-5A5A-43BD-AAAF-F11E95B8D083}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F6FE30BD-5A5A-43BD-AAAF-F11E95B8D083}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F6FE30BD-5A5A-43BD-AAAF-F11E95B8D083}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F6FE30BD-5A5A-43BD-AAAF-F11E95B8D083}.Release|Any CPU.Build.0 = Release|Any CPU
+		{087831EB-6849-4C02-939B-19B09AE70514}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{087831EB-6849-4C02-939B-19B09AE70514}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{087831EB-6849-4C02-939B-19B09AE70514}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{087831EB-6849-4C02-939B-19B09AE70514}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
 	EndGlobalSection
 EndGlobal
