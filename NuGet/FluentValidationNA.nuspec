@@ -2,20 +2,21 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>FluentValidationNA</id>
-        <version>0.0.2</version>
+        <version>0.0.3</version>
         <title>Fluent Validation Library</title>
         <authors>Nathan Arnott</authors>
         <projectUrl>https://github.com/NArnott/fluentvalidation</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>A fluent API for input, state and assumption validation.</description>
-        <releaseNotes>v0.0.2 Added intellisense documentation.
+        <releaseNotes>v0.0.3 Added Validation Object Pools.
+v0.0.2 Added intellisense documentation.
 v0.0.1 Initial Release</releaseNotes>
         <copyright>Copyright (c) Nathan Arnott 2014</copyright>
         <language>en-US</language>
         <tags>Validation InputValidation IntegrityCheck FluentValidation</tags>
     </metadata>
     <files>
-        <file src="..\FluentValidation\bin\Debug\FluentValidation.dll" target="lib\portable-net4+sl5+wp8+win8\FluentValidation.dll" />
-        <file src="..\FluentValidation\bin\Debug\FluentValidation.XML" target="lib\portable-net4+sl5+wp8+win8\FluentValidation.XML" />
+        <file src="..\FluentValidation\bin\Release\FluentValidation.dll" target="lib\portable-net4+sl5+wp8+win8\FluentValidation.dll" />
+        <file src="..\FluentValidation\bin\Release\FluentValidation.XML" target="lib\portable-net4+sl5+wp8+win8\FluentValidation.XML" />
     </files>
 </package>

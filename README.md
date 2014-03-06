@@ -68,9 +68,13 @@ Assumptions
 Some Trivia
 ===========
 
+Since certain validations (such as argument and state validations) require a validation object to hold the context information of the check, we use an object pool to minimize the creation of validation objects.  While this produces a slight initial overhead, it won't matter if you make ten or ten million validations, the same few objects are used.  Checks are thread-safe too.
+
 At most, only one small state object is created when checks do not fail.  This means that a mimial footprint is required unless exceptions are actually thrown.  For assumptions, there is no footprint at all unless a check fails.
 
-Checks have been optimized. When you call Check(), once an actual check fails, the rest of the checks are ignored.
+Checks are optimized. When you call Check(), once an actual check fails, the rest of the checks are ignored.
+
+
 [1]: https://github.com/AArnott/Validation "Validation"
 [2]: http://blog.getpaint.net/2008/12/06/a-fluent-approach-to-c-parameter-validation/ "Paint.NET Blog"
 [3]: https://www.nuget.org/packages/FluentValidationNA/ "NuGet - Fluent Validation Library"
