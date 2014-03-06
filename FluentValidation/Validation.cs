@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 
@@ -58,7 +59,7 @@ namespace FluentValidation
             if (_exceptionClauses.Count == 1) return _exceptionClauses[0];
 
             //otherwise, we return them all
-            return new AggregateException(_exceptionClauses);
+            return new AggregateException(Strings.DefaultAggregateExceptionMessage, _exceptionClauses);
         }
 
         internal void Clear()
@@ -68,5 +69,25 @@ namespace FluentValidation
         }
     }
 
-    
+#if NET35
+    /// <summary>
+    /// A mimic of the AggregateException defines in .NET 4.0+ to support the return of multiple exceptions.  Since it is a mimic, it 
+    /// is not defined for use outside of the scope of the FluentValidation project.
+    /// </summary>
+    public class AggregateException : Exception
+    {
+
+        internal AggregateException(string message, IEnumerable<Exception> innerExceptions)
+            : base(message, innerExceptions.First())
+        {
+            InnerExceptions = new List<Exception>(innerExceptions).AsReadOnly();
+        }
+
+        /// <summary>
+        /// Gets a read-only collection of the <see cref="System.Exception"/> instances that caused the current exception.
+        /// </summary>
+        public ReadOnlyCollection<Exception> InnerExceptions { get; private set; }
+
+    }
+#endif
 }

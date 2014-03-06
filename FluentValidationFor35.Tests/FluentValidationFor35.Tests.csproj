@@ -3,12 +3,12 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{F6FE30BD-5A5A-43BD-AAAF-F11E95B8D083}</ProjectGuid>
+    <ProjectGuid>{C6C84290-644E-486D-8BE1-D485672BBD79}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>FluentValidation.Tests</RootNamespace>
-    <AssemblyName>FluentValidation.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <AssemblyName>FluentValidationFor35.Tests</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -22,7 +22,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;NET35</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -30,7 +30,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;NET35</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -46,12 +46,13 @@
       <HintPath>..\packages\CommonServiceLocator.1.0\lib\NET35\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="Telerik.JustMock, Version=2014.1.1424.1, Culture=neutral, PublicKeyToken=721b6c5bc0326b3a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="Telerik.JustMock">
       <HintPath>..\packages\JustMock.2014.1.1424.1\lib\Net35\Telerik.JustMock.dll</HintPath>
     </Reference>
-    <Reference Include="Telerik.JustMock.Container, Version=2014.1.1424.1, Culture=neutral, PublicKeyToken=721b6c5bc0326b3a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Telerik.JustMock.Container">
       <HintPath>..\packages\JustMock.2014.1.1424.1\lib\Net35\Telerik.JustMock.Container.dll</HintPath>
     </Reference>
   </ItemGroup>
@@ -68,23 +69,33 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="ArgumentTests.cs" />
-    <Compile Include="AssumptionsTests.cs" />
-    <Compile Include="Helpers.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StateTests.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\FluentValidation\FluentValidation.csproj">
-      <Project>{5aac8ae9-8fac-47e2-ad74-94d9979b9b34}</Project>
-      <Name>FluentValidation</Name>
-    </ProjectReference>
+    <Compile Include="..\FluentValidation.Tests\ArgumentTests.cs">
+      <Link>ArgumentTests.cs</Link>
+    </Compile>
+    <Compile Include="..\FluentValidation.Tests\AssumptionsTests.cs">
+      <Link>AssumptionsTests.cs</Link>
+    </Compile>
+    <Compile Include="..\FluentValidation.Tests\Helpers.cs">
+      <Link>Helpers.cs</Link>
+    </Compile>
+    <Compile Include="..\FluentValidation.Tests\StateTests.cs">
+      <Link>StateTests.cs</Link>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\FluentValidation\Properties\key.snk">
       <Link>key.snk</Link>
     </None>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FluentValidationFor35\FluentValidationFor35.csproj">
+      <Project>{5ce45574-1586-4d92-8217-831c68bec4bb}</Project>
+      <Name>FluentValidationFor35</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

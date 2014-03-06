@@ -14,6 +14,7 @@ namespace FluentValidation
             return String.Format(CultureInfo.CurrentCulture, format, arguments);
         }
 
+#if !NET35
         /// <summary>
         /// Trims away a given surrounding type, returning just the generic type argument,
         /// if the given type is in fact a generic type with just one type argument and
@@ -34,6 +35,23 @@ namespace FluentValidation
                 return type;
             }
         }
+#endif
+
+#if NET35
+        internal static bool IsEmptyOrWhiteSpace(this string value)
+        {
+            if (value.Length == 0) return true;
+
+            var length = value.Length;
+
+            for( int i = 0; i < length; i++)
+            {
+                if (!Char.IsWhiteSpace(value[i])) return false;
+            }
+
+            return true;
+        }
+#endif
 
 
         public static bool IsEnumEmpty(this IEnumerable enumerable)

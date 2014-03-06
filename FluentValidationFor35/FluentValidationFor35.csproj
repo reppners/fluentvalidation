@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{5CE45574-1586-4D92-8217-831C68BEC4BB}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>FluentValidation</RootNamespace>
+    <AssemblyName>FluentValidation</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;NET35</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\FluentValidation.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;NET35</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\FluentValidation.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\FluentValidation\Properties\key.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\FluentValidation\ArgumentValidation.cs">
+      <Link>ArgumentValidation.cs</Link>
+    </Compile>
+    <Compile Include="..\FluentValidation\ArgumentValidationExtensions.cs">
+      <Link>ArgumentValidationExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\FluentValidation\AssumptionValidation.cs">
+      <Link>AssumptionValidation.cs</Link>
+    </Compile>
+    <Compile Include="..\FluentValidation\AssumptionValidationExtensions.cs">
+      <Link>AssumptionValidationExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\FluentValidation\Helpers.cs">
+      <Link>Helpers.cs</Link>
+    </Compile>
+    <Compile Include="..\FluentValidation\IDisposedObservable.cs">
+      <Link>IDisposedObservable.cs</Link>
+    </Compile>
+    <Compile Include="..\FluentValidation\InternalErrorException.cs">
+      <Link>InternalErrorException.cs</Link>
+    </Compile>
+    <Compile Include="..\FluentValidation\Properties\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\FluentValidation\StateValidation.cs">
+      <Link>StateValidation.cs</Link>
+    </Compile>
+    <Compile Include="..\FluentValidation\StateValidationExtensions.cs">
+      <Link>StateValidationExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\FluentValidation\Strings.Designer.cs">
+      <Link>Strings.Designer.cs</Link>
+    </Compile>
+    <Compile Include="..\FluentValidation\Validate.cs">
+      <Link>Validate.cs</Link>
+    </Compile>
+    <Compile Include="..\FluentValidation\Validation.cs">
+      <Link>Validation.cs</Link>
+    </Compile>
+    <Compile Include="..\FluentValidation\ValidationExtensions.cs">
+      <Link>ValidationExtensions.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\FluentValidation\Strings.resx">
+      <Link>Strings.resx</Link>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\FluentValidation\Properties\key.snk">
+      <Link>Properties\key.snk</Link>
+    </None>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

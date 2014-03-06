@@ -97,6 +97,15 @@ namespace FluentValidation {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Multiple Exceptions Occurred..
+        /// </summary>
+        internal static string DefaultAggregateExceptionMessage {
+            get {
+                return ResourceManager.GetString("DefaultAggregateExceptionMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to An internal error occurred. Please contact support..
         /// </summary>
         internal static string InternalExceptionMessage {

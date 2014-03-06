@@ -188,7 +188,11 @@ namespace FluentValidation
             {
                 if (service() == null)
                 {
+#if NET35
+                    var coreType = typeof(T);
+#else
                     var coreType = Helpers.TrimGenericWrapper(typeof(T), typeof(Lazy<>));
+#endif
 
                     Fail(ref validation, Format(Strings.ServiceMissing, coreType.FullName));
                 }

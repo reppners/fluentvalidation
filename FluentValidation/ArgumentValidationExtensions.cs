@@ -169,7 +169,11 @@ namespace FluentValidation
                 {
                     validation.SetException(new ArgumentNullException(validation.ParameterName));
                 }
+#if NET35
+                else if (argVal.IsEmptyOrWhiteSpace())
+#else
                 else if (String.IsNullOrWhiteSpace(argVal))
+#endif
                 {
                     validation.SetException(new ArgumentException(Format(Strings.Argument_WhiteSpaceString), validation.ParameterName));
                 }
