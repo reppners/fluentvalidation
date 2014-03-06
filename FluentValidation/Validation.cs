@@ -71,7 +71,7 @@ namespace FluentValidation
 
 #if NET35
     /// <summary>
-    /// A mimic of the AggregateException defines in .NET 4.0+ to support the return of multiple exceptions.  Since it is a mimic, it 
+    /// A mimic of the AggregateException defined in .NET 4.0+ to support the return of multiple exceptions.  Since it is a mimic, it 
     /// is not defined for use outside of the scope of the FluentValidation project.
     /// </summary>
     public class AggregateException : Exception
