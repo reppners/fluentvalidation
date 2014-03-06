@@ -3,7 +3,7 @@ Fluent Validation Library
 
 *A Fluent API for Input, State amd Assumption Validation.*
 
-This project is available on [NuGet][3].
+The binary is available on [NuGet][3].
 
 Based on the [Validation][1] library by Andrew Arnott, and a [Blog][2] by Rick Brewster.
 
