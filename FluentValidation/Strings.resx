@@ -127,12 +127,12 @@
     <value>'{0}' was expected to be null.</value>
   </data>
   <data name="Argument_WhiteSpaceString" xml:space="preserve">
-    <value>'String' cannot empty or contain only white space.</value>
+    <value>'String' cannot be empty or contain only white space.</value>
   </data>
   <data name="InternalExceptionMessage" xml:space="preserve">
     <value>An internal error occurred. Please contact support.</value>
   </data>
   <data name="ServiceMissing" xml:space="preserve">
-    <value>Cannot find an instance of the {0} service.</value>
+    <value>Cannot find an instance of the '{0}' service.</value>
   </data>
 </root>

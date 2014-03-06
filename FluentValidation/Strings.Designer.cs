@@ -88,7 +88,7 @@ namespace FluentValidation {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &apos;String&apos; cannot empty or contain only white space..
+        ///   Looks up a localized string similar to &apos;String&apos; cannot be empty or contain only white space..
         /// </summary>
         internal static string Argument_WhiteSpaceString {
             get {
@@ -106,7 +106,7 @@ namespace FluentValidation {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot find an instance of the {0} service..
+        ///   Looks up a localized string similar to Cannot find an instance of the &apos;{0}&apos; service..
         /// </summary>
         internal static string ServiceMissing {
             get {
