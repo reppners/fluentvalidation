@@ -9,6 +9,9 @@ namespace FluentValidation
     /// <summary>
     /// The exception that is thrown when an Assumption Check fails.
     /// </summary>
+#if NET35
+    [Serializable]
+#endif
     public class InternalErrorException : Exception
     {
         /// <summary>
