@@ -2,15 +2,15 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>FluentValidationNA</id>
-        <version>0.0.3</version>
+        <version>0.0.4</version>
         <title>Fluent Validation Library</title>
         <authors>Nathan Arnott</authors>
         <projectUrl>https://github.com/NArnott/fluentvalidation</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>A fluent API for input, state and assumption validation.</description>
-        <releaseNotes>v0.0.3 Added Validation Object Pools.
-v0.0.2 Added intellisense documentation.
-v0.0.1 Initial Release</releaseNotes>
+        <releaseNotes>v0.0.4 Added Support for .NET 3.5, Fixed Multithreading Bug introduced in 0.0.3.
+v0.0.3 Added Validation Object Pools.
+v0.0.2 Added intellisense documentation.</releaseNotes>
         <copyright>Copyright (c) Nathan Arnott 2014</copyright>
         <language>en-US</language>
         <tags>Validation InputValidation IntegrityCheck FluentValidation</tags>
