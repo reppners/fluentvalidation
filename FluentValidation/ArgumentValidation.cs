@@ -8,11 +8,11 @@ namespace FluentValidation
     /// <summary>
     /// Provides state information regarding the argument currently being validated.
     /// </summary>
-    /// <typeparam name="TArgType">The type of the argument being validated.</typeparam>
-    public sealed class ArgumentValidation<TArgType> : Validation 
+    /// <typeparam name="TArg">The type of the argument being validated.</typeparam>
+    public sealed class ArgumentValidation<TArg> : Validation 
     {
         [ThreadStatic]
-        static Queue<ArgumentValidation<TArgType>> _validationPool;
+        static Queue<ArgumentValidation<TArg>> _validationPool;
         
 
         private ArgumentValidation() { }
@@ -26,13 +26,13 @@ namespace FluentValidation
         /// <summary>
         /// The value of the argument being validated.
         /// </summary>
-        public TArgType ArgumentValue { get; private set; }
+        public TArg ArgumentValue { get; private set; }
 
-        internal static ArgumentValidation<TArgType> Borrow(string paramName, TArgType argValue)
+        internal static ArgumentValidation<TArg> Borrow(string paramName, TArg argValue)
         {
-            if (_validationPool == null) _validationPool = new Queue<ArgumentValidation<TArgType>>();
+            if (_validationPool == null) _validationPool = new Queue<ArgumentValidation<TArg>>();
 
-            ArgumentValidation<TArgType> valObj;
+            ArgumentValidation<TArg> valObj;
 
             if (_validationPool.Count > 0)
             {
@@ -40,7 +40,7 @@ namespace FluentValidation
             }
             else
             {
-                valObj = new ArgumentValidation<TArgType>();
+                valObj = new ArgumentValidation<TArg>();
 
 #if DEBUG
                 ArgumentValidationCounter.AddCreationCount();
@@ -60,7 +60,7 @@ namespace FluentValidation
         internal void Return()
         {
             ParameterName = null;
-            ArgumentValue = default(TArgType);
+            ArgumentValue = default(TArg);
 
             Clear();
 
