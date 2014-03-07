@@ -30,5 +30,52 @@ namespace FluentValidation.Tests
 
             Assert.Fail("Expected Exception did not occur.");
         }
+
+        public static IEnumerable<T> EmptyEnumerable<T>()
+        {
+            return new EmptyEnumerableImpl<T>();
+        }
+
+        class EmptyEnumerableImpl<T> : IEnumerable<T>
+        {
+            public IEnumerator<T> GetEnumerator()
+            {
+                return new EmptyEnumerator<T>();
+            }
+
+            System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+            {
+                return new EmptyEnumerator<T>();
+            }
+        }
+
+        class EmptyEnumerator<T> : IEnumerator<T>
+        {
+
+            public T Current
+            {
+                get { throw new InvalidOperationException(); }
+            }
+
+            public void Dispose()
+            {
+                
+            }
+
+            object System.Collections.IEnumerator.Current
+            {
+                get { throw new InvalidOperationException(); }
+            }
+
+            public bool MoveNext()
+            {
+                return false;
+            }
+
+            public void Reset()
+            {
+                throw new NotSupportedException();
+            }
+        }
     }
 }

@@ -10,8 +10,9 @@ namespace FluentValidation.Tests
         [TestMethod]
         public void State_ValidateOperation()
         {
-            Validate.State(1).Operation(n => n > 0).Check();
+            Validate.State(1).Operation(n => n > 0).Check().State(-1).Operation(n => n < 0).Check();
             Helpers.ExpectException<InvalidOperationException>(() => Validate.State(1).Operation(n => n < 0).Check());
+            Helpers.ExpectException<InvalidOperationException>(() => Validate.State(1).Operation(n => n < 0,"test {0}", "format" ).Check());
         }
 
         [TestMethod]
@@ -28,8 +29,8 @@ namespace FluentValidation.Tests
             
 
             //Act
-            Validate.State(test).NotDisposed(t => true).Check();
-            Helpers.ExpectException<ObjectDisposedException>(() => Validate.State(test).NotDisposed(t => false).Check());
+            Validate.State(test).NotDisposed(t => true, "msg").Check();
+            Helpers.ExpectException<ObjectDisposedException>(() => Validate.State(test).NotDisposed(t => false, "msg").Check());
 
             Helpers.ExpectException<ObjectDisposedException>(() => Validate.State(disposed).NotDisposed().Check());
             Validate.State(notDisposed).NotDisposed().Check();

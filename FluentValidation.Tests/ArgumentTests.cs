@@ -115,7 +115,7 @@ namespace FluentValidation.Tests
         {
             //arrange
             IEnumerable value1 = null;
-            IEnumerable value2 = Enumerable.Empty<object>();
+            IEnumerable value2 = Helpers.EmptyEnumerable<object>(); //We cannot use Enumerable.Empty<object>(), since it is implemented by an empty array, which is also a collection.
             IEnumerable value3 = Enumerable.Range(1, 10);
             IEnumerable value4 = new int[] { }; //collection that should support Count
             IEnumerable value5 = new int[] { 1, 2, 3 }; //collection that should support Count
@@ -149,7 +149,7 @@ namespace FluentValidation.Tests
             Helpers.ExpectException<ArgumentOutOfRangeException>(() => Validate.Argument(value3).Range(n => n < 0).Check());
 
             Validate.Argument(value4).Range(n => n > 0).Check();
-            Validate.Argument(value4).Range(n => n < 0).Check();
+            Validate.Argument(value4).Range(n => n < 0, "test {0}", "formatting").Check();
         }
 
 
@@ -165,6 +165,18 @@ namespace FluentValidation.Tests
             Validate.Argument(value1).IsNull().Or().IsNotNull().Check();
             Validate.Argument(value2).IsNull().Or().IsNotNull().Check();
             Validate.Argument(value3).IsNull().Or().IsNotNull().Check();
+        }
+
+        [TestMethod]
+        public void Argument_That()
+        { 
+            var value1 = 5;
+            string value2 = null;
+
+            Validate.Argument(value1).That(v => v == 5, "test {0}", "formatting").Check();
+            Helpers.ExpectException<ArgumentException>(() => Validate.Argument(value1).That(v => v != 5, "msg").Check());
+
+            Validate.Argument(value2).That(v => v == "fail", "msg").Check();
         }
 
 
@@ -213,6 +225,8 @@ namespace FluentValidation.Tests
             Assert.AreEqual(createCount, ArgumentValidationCounter.CreationCount);
             Assert.AreEqual(0, ArgumentValidationCounter.MissingCount);
         }
+
+        
 
         static void ComplexFunction(
             string cannotBeNullStr, 

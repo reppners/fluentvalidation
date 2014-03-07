@@ -27,8 +27,15 @@ namespace FluentValidation.Tests
                                   .IsType<string>(() => "test")
 
                                   .ServicePresent(() => "test")
+#if !NET35
+                                  .ServicePresent(() => new Lazy<string>( () => "test"))
+#endif
 
-                                  .Check();
+                                  .Check()
+
+                                  .Assumptions().Check(); //check continuing assumptions
+
+            
         }
 
         [TestMethod]
@@ -51,6 +58,10 @@ namespace FluentValidation.Tests
             Helpers.ExpectException<InternalErrorException>(() => Validate.Assumptions().IsType<string>(() => 5).Check());
 
             Helpers.ExpectException<InternalErrorException>(() => Validate.Assumptions().ServicePresent(() => (string)null).Check());
+
+            #if !NET35
+               Helpers.ExpectException<InternalErrorException>(() => Validate.Assumptions().ServicePresent(() => (Lazy<string>)null).Check());
+            #endif
         }
     }
 }
