@@ -12,7 +12,7 @@ namespace FluentValidation
     public sealed class ArgumentValidation<TArgType> : Validation 
     {
         [ThreadStatic]
-        static Queue<ArgumentValidation<TArgType>> _validationPool = new Queue<ArgumentValidation<TArgType>>();
+        static Queue<ArgumentValidation<TArgType>> _validationPool;
         
 
         private ArgumentValidation() { }
@@ -30,6 +30,8 @@ namespace FluentValidation
 
         internal static ArgumentValidation<TArgType> Borrow(string paramName, TArgType argValue)
         {
+            if (_validationPool == null) _validationPool = new Queue<ArgumentValidation<TArgType>>();
+
             ArgumentValidation<TArgType> valObj;
 
             if (_validationPool.Count > 0)
@@ -41,7 +43,7 @@ namespace FluentValidation
                 valObj = new ArgumentValidation<TArgType>();
 
 #if DEBUG
-                ArgumentValidationCounter.CreationCount++;
+                ArgumentValidationCounter.AddCreationCount();
 #endif
             }
 
@@ -49,7 +51,7 @@ namespace FluentValidation
             valObj.ArgumentValue = argValue;
 
 #if DEBUG
-            ArgumentValidationCounter.MissingCount++;
+            ArgumentValidationCounter.AddMissingCount();
 #endif
 
             return valObj;
@@ -65,7 +67,7 @@ namespace FluentValidation
             _validationPool.Enqueue(this);
 
         #if DEBUG
-            ArgumentValidationCounter.MissingCount--;
+            ArgumentValidationCounter.SubtractMissingCount();
         #endif
         }
 
@@ -75,9 +77,35 @@ namespace FluentValidation
 #if DEBUG
     internal static class ArgumentValidationCounter
     {
-        public static int CreationCount { get; set; }
+        static object _syncObj = new object();
 
-        public static int MissingCount { get; set; }
+        public static void AddCreationCount()
+        {
+            lock(_syncObj ) { CreationCount++;}
+        }
+
+        public static void AddMissingCount()
+        {
+            lock (_syncObj) { MissingCount++; }
+        }
+
+        public static void SubtractMissingCount()
+        {
+            lock (_syncObj) { MissingCount--; }
+        }
+
+        public static void Reset()
+        {
+            lock(_syncObj )
+            {
+                CreationCount = 0;
+                MissingCount = 0;
+            }
+        }
+
+        public static int CreationCount { get; private set; }
+
+        public static int MissingCount { get; private set; }
     }
 #endif
 

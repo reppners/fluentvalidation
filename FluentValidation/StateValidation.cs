@@ -12,7 +12,7 @@ namespace FluentValidation
     public sealed class StateValidation<T> : Validation
     {
         [ThreadStatic]
-        static Queue<StateValidation<T>> _validationPool = new Queue<StateValidation<T>>();
+        static Queue<StateValidation<T>> _validationPool;
 
         private StateValidation() { }
 
@@ -25,6 +25,8 @@ namespace FluentValidation
 
         internal static StateValidation<T> Borrow(T obj)
         {
+            if (_validationPool == null) _validationPool = new Queue<StateValidation<T>>();
+
             StateValidation<T> valObj;
 
             if (_validationPool.Count > 0)

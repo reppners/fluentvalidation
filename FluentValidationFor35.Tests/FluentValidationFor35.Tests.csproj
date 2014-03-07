@@ -78,6 +78,9 @@
     <Compile Include="..\FluentValidation.Tests\Helpers.cs">
       <Link>Helpers.cs</Link>
     </Compile>
+    <Compile Include="..\FluentValidation.Tests\MultithreadingTests.cs">
+      <Link>MultithreadingTests.cs</Link>
+    </Compile>
     <Compile Include="..\FluentValidation.Tests\StateTests.cs">
       <Link>StateTests.cs</Link>
     </Compile>

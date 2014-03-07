@@ -71,6 +71,7 @@
     <Compile Include="ArgumentTests.cs" />
     <Compile Include="AssumptionsTests.cs" />
     <Compile Include="Helpers.cs" />
+    <Compile Include="MultithreadingTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StateTests.cs" />
   </ItemGroup>

@@ -200,8 +200,7 @@ namespace FluentValidation.Tests
         {
             
             //set these to zero since previous tests may have moved them.
-            ArgumentValidationCounter.MissingCount = 0;
-            ArgumentValidationCounter.CreationCount = 0;
+            ArgumentValidationCounter.Reset();
 
             Argument_ComplexTest();
 
