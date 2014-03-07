@@ -10,7 +10,7 @@ namespace FluentValidation.Tests
     public class AssumptionsTests
     {
         [TestMethod]
-        public void Assumptions_TestBasics()
+        public void Assumptions_Positive_Tests()
         {
             Validate.Assumptions().IsTrue(() => true)
                                   .IsFalse(() => false)
@@ -29,6 +29,28 @@ namespace FluentValidation.Tests
                                   .ServicePresent(() => "test")
 
                                   .Check();
+        }
+
+        [TestMethod]
+        public void Assumptions_Negative_Tests()
+        {
+            Helpers.ExpectException<InternalErrorException>(() => Validate.Assumptions().IsTrue(() => false).Check());
+            Helpers.ExpectException<InternalErrorException>(() => Validate.Assumptions().IsFalse(() => true).Check());
+
+            Helpers.ExpectException<InternalErrorException>(() => Validate.Assumptions().IsNull(() => "").Check());
+            Helpers.ExpectException<InternalErrorException>(() => Validate.Assumptions().IsNotNull(() => (string)null).Check());
+
+            Helpers.ExpectException<InternalErrorException>(() => Validate.Assumptions().IsNull(() => (int?)5).Check());
+            Helpers.ExpectException<InternalErrorException>(() => Validate.Assumptions().IsNotNull(() => (int?)null).Check());
+
+            Helpers.ExpectException<InternalErrorException>(() => Validate.Assumptions().IsNotNullOrEmpty(() => (string)null).Check());
+            Helpers.ExpectException<InternalErrorException>(() => Validate.Assumptions().IsNotNullOrEmpty(() => "").Check());
+            Helpers.ExpectException<InternalErrorException>(() => Validate.Assumptions().IsNotNullOrEmpty(() => (int[])null).Check());
+            Helpers.ExpectException<InternalErrorException>(() => Validate.Assumptions().IsNotNullOrEmpty(() => new int[0]).Check());
+
+            Helpers.ExpectException<InternalErrorException>(() => Validate.Assumptions().IsType<string>(() => 5).Check());
+
+            Helpers.ExpectException<InternalErrorException>(() => Validate.Assumptions().ServicePresent(() => (string)null).Check());
         }
     }
 }
