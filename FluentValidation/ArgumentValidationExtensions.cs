@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 
@@ -235,6 +236,38 @@ namespace FluentValidation
         #endregion
 
         #region General Values
+
+        /// <summary>
+        /// Checks that the argument can be converted to another type.
+        /// </summary>
+        /// <typeparam name="TArg">The type of the argument being validated.</typeparam>
+        /// <typeparam name="T">The type to convert the argument value into.</typeparam>
+        /// <param name="validation">The current argument that is being validated.</param>
+        /// <param name="conversionResult">The resulting value of the conversion.</param>
+        /// <returns>The current argument that is being validated.</returns>
+        public static ArgumentValidation<TArg> CanConvertTo<TArg, T>(this ArgumentValidation<TArg> validation, out T conversionResult)
+        {
+            conversionResult = default(T);
+
+            if (validation.AcceptCall() && validation.ArgumentValue != null)
+            {
+                try
+                {
+                    conversionResult = (T)Convert.ChangeType(validation.ArgumentValue, typeof(T), CultureInfo.CurrentCulture);
+                }
+                catch (InvalidCastException)
+                {
+                    validation.SetException(new ArgumentException(Format(Strings.Argument_ConvertStringFail, typeof(TArg).Name, typeof(T).Name), validation.ParameterName));
+                }
+                catch (FormatException)
+                {
+                    validation.SetException(new ArgumentException(Format(Strings.Argument_ConvertStringFail, typeof(TArg).Name, typeof(T).Name), validation.ParameterName));
+                }
+            }
+
+            return validation;
+        }
+
 
         /// <summary>
         /// Checks that the provided condition evaluated to True.  If not, an <see cref="ArgumentOutOfRangeException"/> is thrown.  If the argument is <c>null</c>, this check is ignored.

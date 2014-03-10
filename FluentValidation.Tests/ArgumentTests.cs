@@ -246,5 +246,20 @@ namespace FluentValidation.Tests
                     .Argument(mustBeAllCaps, "mustBeAllCaps").That(s => s.ToUpper() == s, "Value must be all caps").Check();
             
         }
+
+        [TestMethod]
+        public void Argument_CanConvertTo()
+        {
+            string test1 = "123";
+            string test2 = "bla";
+
+            int result1;
+            int result2;
+
+            Validate.Argument(test1).CanConvertTo(out result1).Check();
+            Helpers.ExpectException<ArgumentException>(() => Validate.Argument(test2).CanConvertTo(out result2).Check());
+
+            Assert.AreEqual(123, result1);
+        }
     }
 }

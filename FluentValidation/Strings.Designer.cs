@@ -61,6 +61,15 @@ namespace FluentValidation {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &apos;{0}&apos; value must be convertable to type &apos;{1}&apos;..
+        /// </summary>
+        internal static string Argument_ConvertStringFail {
+            get {
+                return ResourceManager.GetString("Argument_ConvertStringFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &apos;{0}&apos; must have one or more elements..
         /// </summary>
         internal static string Argument_EmptyEnumerable {
