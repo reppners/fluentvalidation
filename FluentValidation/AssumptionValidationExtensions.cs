@@ -198,7 +198,7 @@ namespace FluentValidation
         /// <param name="service">The service to verify existance.</param>
         /// <returns>The current assumptions that is being validated.</returns>
         /// <exception cref="InternalErrorException">Thrown during <see cref="Check(AssumptionValidation)"/> if the service is null.</exception>
-        public static AssumptionValidation ServicePresent<T>(this AssumptionValidation validation, Func<T> service)
+        public static AssumptionValidation IsServicePresent<T>(this AssumptionValidation validation, Func<T> service)
         {
             if (validation.AcceptCall())
             {
@@ -215,6 +215,15 @@ namespace FluentValidation
             }
 
             return validation;
+        }
+
+        /// <summary>
+        /// Obsolete Method. Will be removed in later release.
+        /// </summary>
+        [Obsolete("Use IsServicePresent instead. Will be removed in later release.")]
+        public static AssumptionValidation ServicePresent<T>(this AssumptionValidation validation, Func<T> service)
+        {
+            return IsServicePresent(validation, service);
         }
 
 

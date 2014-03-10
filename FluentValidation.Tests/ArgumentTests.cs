@@ -139,17 +139,17 @@ namespace FluentValidation.Tests
 
             
             //act
-            Validate.Argument(value1).Range(n => n > 0).Check();
-            Helpers.ExpectException<ArgumentOutOfRangeException>(() => Validate.Argument(value1).Range(n => n < 0).Check());
+            Validate.Argument(value1).IsInRange(n => n > 0).Check();
+            Helpers.ExpectException<ArgumentOutOfRangeException>(() => Validate.Argument(value1).IsInRange(n => n < 0).Check());
 
-            Validate.Argument(value2).Range(n => n <= 0).Check();
-            Helpers.ExpectException<ArgumentOutOfRangeException>(() => Validate.Argument(value2).Range(n => n >= 0).Check());
+            Validate.Argument(value2).IsInRange(n => n <= 0).Check();
+            Helpers.ExpectException<ArgumentOutOfRangeException>(() => Validate.Argument(value2).IsInRange(n => n >= 0).Check());
 
-            Validate.Argument(value3).Range(n => n > 0).Check();
-            Helpers.ExpectException<ArgumentOutOfRangeException>(() => Validate.Argument(value3).Range(n => n < 0).Check());
+            Validate.Argument(value3).IsInRange(n => n > 0).Check();
+            Helpers.ExpectException<ArgumentOutOfRangeException>(() => Validate.Argument(value3).IsInRange(n => n < 0).Check());
 
-            Validate.Argument(value4).Range(n => n > 0).Check();
-            Validate.Argument(value4).Range(n => n < 0, "test {0}", "formatting").Check();
+            Validate.Argument(value4).IsInRange(n => n > 0).Check();
+            Validate.Argument(value4).IsInRange(n => n < 0, "test {0}", "formatting").Check();
         }
 
 
@@ -241,8 +241,8 @@ namespace FluentValidation.Tests
         {
             Validate.Argument(cannotBeNullStr, "cannotBeNullStr").IsNotNull().Check()
                     .Argument(cannotBeEmptyStr, "cannotBeEmptyStr").IsNotNullOrEmpty().Check()
-                    .Argument(mustBeGreaterThanZero, "mustBeGreaterThanZero").Range(v => v > 0).Check()
-                    .Argument(mustBeLessThanZeroOrNull, "mustBeLessThanZeroOrNull").Range(v => v < 0).Or().IsNull().Check()
+                    .Argument(mustBeGreaterThanZero, "mustBeGreaterThanZero").IsInRange(v => v > 0).Check()
+                    .Argument(mustBeLessThanZeroOrNull, "mustBeLessThanZeroOrNull").IsInRange(v => v < 0).Or().IsNull().Check()
                     .Argument(mustBeAllCaps, "mustBeAllCaps").That(s => s.ToUpper() == s, "Value must be all caps").Check();
             
         }

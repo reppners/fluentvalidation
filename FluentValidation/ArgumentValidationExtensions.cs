@@ -278,7 +278,7 @@ namespace FluentValidation
         /// <param name="message">An optional message to throw with the exception.</param>
         /// <returns>The current argument that is being validated.</returns>
         /// <exception cref="ArgumentOutOfRangeException">Thrown during <see cref="Check{TArg}(ArgumentValidation{TArg})"/> if <paramref name="condition"/> evaluated to false.</exception>
-        public static ArgumentValidation<TArg> Range<TArg>(
+        public static ArgumentValidation<TArg> IsInRange<TArg>(
             this ArgumentValidation<TArg> validation,
             Predicate<TArg> condition,
             string message = null)
@@ -304,13 +304,39 @@ namespace FluentValidation
         /// <param name="args">An object array that contains zero or more objects to format.</param>
         /// <returns>The current argument that is being validated.</returns>
         /// <exception cref="ArgumentOutOfRangeException">Thrown during <see cref="Check{TArg}(ArgumentValidation{TArg})"/> if <paramref name="condition"/> evaluated to false.</exception>
+        public static ArgumentValidation<TArg> IsInRange<TArg>(
+            this ArgumentValidation<TArg> validation,
+            Predicate<TArg> condition,
+            string format,
+            params object[] args)
+        {
+            return IsInRange(validation, condition, Format(format, args));
+        }
+
+        /// <summary>
+        /// Obsolete Method. Will be removed in later release. 
+        /// </summary>
+        [Obsolete("Use IsInRange instead. Will be removed in later release.")]
+        public static ArgumentValidation<TArg> Range<TArg>(
+            this ArgumentValidation<TArg> validation,
+            Predicate<TArg> condition,
+            string message = null)
+        {
+            return IsInRange(validation, condition, message);
+        }
+
+
+        /// <summary>
+        /// Obsolete Method. Will be removed in later release.
+        /// </summary>
+        [Obsolete("Use IsInRange instead. Will be removed in later release.")]
         public static ArgumentValidation<TArg> Range<TArg>(
             this ArgumentValidation<TArg> validation,
             Predicate<TArg> condition,
             string format,
             params object[] args)
         {
-            return Range(validation, condition, Format(format, args));
+            return IsInRange(validation, condition, format, args);
         }
 
         /// <summary>

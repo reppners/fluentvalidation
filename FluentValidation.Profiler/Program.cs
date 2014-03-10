@@ -28,7 +28,7 @@ namespace FluentValidation.Profiler
 
         static void SimpleStateTest()
         {
-            Validate.State("test").NotDisposed( str => true ).Operation( str => true ).Check();
+            Validate.State("test").IsNotDisposed( str => true ).Operation( str => true ).Check();
         }
 
         static void OrArgumentTest()

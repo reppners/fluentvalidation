@@ -104,7 +104,7 @@ namespace FluentValidation
         /// <param name="message">An optional message to throw with the exception.</param>
         /// <returns>The current object validation to check against.</returns>
         /// <exception cref="ObjectDisposedException">Thrown during <see cref="Check{T}(StateValidation{T})"/> if <paramref name="condition"/> evaluated to false.</exception>
-        public static StateValidation<T> NotDisposed<T>(this StateValidation<T> validation, Predicate<T> condition, string message = null)
+        public static StateValidation<T> IsNotDisposed<T>(this StateValidation<T> validation, Predicate<T> condition, string message = null)
         {
             if (validation.AcceptCall())
             {
@@ -130,10 +130,29 @@ namespace FluentValidation
         /// <param name="message">An optional message to throw with the exception.</param>
         /// <returns>The current object validation to check against.</returns>
         /// <exception cref="ObjectDisposedException">Thrown during <see cref="Check{T}(StateValidation{T})"/> if the object is disposed.</exception>
+        public static StateValidation<T> IsNotDisposed<T>(this StateValidation<T> validation, string message = null)
+            where T : IDisposedObservable
+        {
+            return IsNotDisposed(validation, obj => !obj.IsDisposed, message);
+        }
+
+        /// <summary>
+        /// Obsolete Method. Will be removed in later release.
+        /// </summary>
+        [Obsolete("Use IsNotDisposed instead. Will be removed in later release.")]
+        public static StateValidation<T> NotDisposed<T>(this StateValidation<T> validation, Predicate<T> condition, string message = null)
+        {
+            return IsNotDisposed(validation, condition, message);
+        }
+
+        /// <summary>
+        /// Obsolete Method. Will be removed in later release.
+        /// </summary>
+        [Obsolete("Use IsNotDisposed instead. Will be removed in later release.")]
         public static StateValidation<T> NotDisposed<T>(this StateValidation<T> validation, string message = null)
             where T : IDisposedObservable
         {
-            return NotDisposed(validation, obj => !obj.IsDisposed, message);
+            return IsNotDisposed(validation, message);
         }
 
         #endregion

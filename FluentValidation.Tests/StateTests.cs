@@ -29,11 +29,11 @@ namespace FluentValidation.Tests
             
 
             //Act
-            Validate.State(test).NotDisposed(t => true, "msg").Check();
-            Helpers.ExpectException<ObjectDisposedException>(() => Validate.State(test).NotDisposed(t => false, "msg").Check());
+            Validate.State(test).IsNotDisposed(t => true, "msg").Check();
+            Helpers.ExpectException<ObjectDisposedException>(() => Validate.State(test).IsNotDisposed(t => false, "msg").Check());
 
-            Helpers.ExpectException<ObjectDisposedException>(() => Validate.State(disposed).NotDisposed().Check());
-            Validate.State(notDisposed).NotDisposed().Check();
+            Helpers.ExpectException<ObjectDisposedException>(() => Validate.State(disposed).IsNotDisposed().Check());
+            Validate.State(notDisposed).IsNotDisposed().Check();
         }
     }
 }
