@@ -61,6 +61,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Strings.resx</DependentUpon>
     </Compile>
+    <Compile Include="SupportingInterfaces.cs" />
     <Compile Include="Validate.cs" />
     <Compile Include="Validation.cs" />
     <Compile Include="ArgumentValidationExtensions.cs" />

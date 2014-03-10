@@ -39,6 +39,19 @@ namespace FluentValidation
             return null;
         }
 
+        /// <summary>
+        /// Allows a check to pass if all validation on the left OR all validations on the right pass.
+        /// </summary>
+        /// <typeparam name="T">The type of the argument being validated.</typeparam>
+        /// <param name="validation">The validation currently being checked.</param>
+        /// <returns>The current object validation to check against.</returns>
+        public static StateValidation<T> Or<T>(this StateValidation<T> validation)
+        {
+            validation.NewClause();
+
+            return validation;
+        }
+
         #region Operation Calls
 
         /// <summary>

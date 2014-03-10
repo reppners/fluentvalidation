@@ -154,7 +154,7 @@ namespace FluentValidation.Tests
 
 
         [TestMethod]
-        public void Argument_ValidateNullOrNotNull()
+        public void Argument_ValidateOr()
         {
             //arrange
             string value1 = null;
@@ -165,6 +165,10 @@ namespace FluentValidation.Tests
             Validate.Argument(value1).IsNull().Or().IsNotNull().Check();
             Validate.Argument(value2).IsNull().Or().IsNotNull().Check();
             Validate.Argument(value3).IsNull().Or().IsNotNull().Check();
+
+            Validate.Argument(value1).IsNull().Or().IsNull().Check();
+            Validate.Argument(value1).IsNull().Or().IsNotNull().Check();
+            Validate.Argument(value1).IsNotNull().Or().IsNull().Check();
         }
 
         [TestMethod]

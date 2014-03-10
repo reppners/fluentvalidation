@@ -80,6 +80,9 @@
     <Compile Include="..\FluentValidation\Strings.Designer.cs">
       <Link>Strings.Designer.cs</Link>
     </Compile>
+    <Compile Include="..\FluentValidation\SupportingInterfaces.cs">
+      <Link>SupportingInterfaces.cs</Link>
+    </Compile>
     <Compile Include="..\FluentValidation\Validate.cs">
       <Link>Validate.cs</Link>
     </Compile>

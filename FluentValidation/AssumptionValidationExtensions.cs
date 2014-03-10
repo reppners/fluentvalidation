@@ -33,6 +33,8 @@ namespace FluentValidation
             {
                 var exception = validation.BaseCheck();
 
+                validation.Return();
+
                 if (exception != null)
                 {
                     throw exception;
@@ -40,6 +42,21 @@ namespace FluentValidation
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// Allows a check to pass if all validation on the left OR all validations on the right pass.
+        /// </summary>
+        /// <typeparam name="T">The type of the argument being validated.</typeparam>
+        /// <param name="validation">The validation currently being checked.</param>
+        /// <returns>The current object validation to check against.</returns>
+        public static AssumptionValidation Or(this AssumptionValidation validation)
+        {
+            if (validation == null) validation = AssumptionValidation.Borrow();
+
+            validation.NewClause();
+
+            return validation;
         }
 
         /// <summary>
@@ -206,7 +223,7 @@ namespace FluentValidation
         {
             var exeption = new InternalErrorException(message);
 
-            if (validation == null) validation = new AssumptionValidation();
+            if (validation == null) validation = AssumptionValidation.Borrow();
 
             validation.SetException(exeption);
         }

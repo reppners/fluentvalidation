@@ -10,7 +10,7 @@ namespace FluentValidation.Tests
     public class AssumptionsTests
     {
         [TestMethod]
-        public void Assumptions_Positive_Tests()
+        public void Assumptions_Positive()
         {
             Validate.Assumptions().IsTrue(() => true)
                                   .IsFalse(() => false)
@@ -39,7 +39,7 @@ namespace FluentValidation.Tests
         }
 
         [TestMethod]
-        public void Assumptions_Negative_Tests()
+        public void Assumptions_Negative()
         {
             Helpers.ExpectException<InternalErrorException>(() => Validate.Assumptions().IsTrue(() => false).Check());
             Helpers.ExpectException<InternalErrorException>(() => Validate.Assumptions().IsFalse(() => true).Check());
@@ -62,6 +62,14 @@ namespace FluentValidation.Tests
             #if !NET35
                Helpers.ExpectException<InternalErrorException>(() => Validate.Assumptions().ServicePresent(() => (Lazy<string>)null).Check());
             #endif
+        }
+
+        [TestMethod]
+        public void Assumptions_Or()
+        {
+            Validate.Assumptions().IsTrue(() => true).Or().IsTrue(() => true).Check();
+            Validate.Assumptions().IsTrue(() => false).Or().IsTrue(() => true).Check();
+            Validate.Assumptions().IsTrue(() => true).Or().IsTrue(() => false).Check();
         }
     }
 }
