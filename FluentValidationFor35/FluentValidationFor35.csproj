@@ -86,6 +86,9 @@
     <Compile Include="..\FluentValidation\Validate.cs">
       <Link>Validate.cs</Link>
     </Compile>
+    <Compile Include="..\FluentValidation\ValidatedNotNullAttribute.cs">
+      <Link>ValidatedNotNullAttribute.cs</Link>
+    </Compile>
     <Compile Include="..\FluentValidation\Validation.cs">
       <Link>Validation.cs</Link>
     </Compile>

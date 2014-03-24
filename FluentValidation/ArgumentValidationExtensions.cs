@@ -21,11 +21,10 @@ namespace FluentValidation
         /// <param name="value">The value of the argument being validated.</param>
         /// <param name="paramName">The name of the parameter being validated. Optional.</param>
         /// <returns>A new <see cref="ArgumentValidation{TArg}"/> instance.</returns>
-        public static ArgumentValidation<TArg> Argument<TArg>(this IValidation validation, TArg value, string paramName = null)
+        public static ArgumentValidation<TArg> Argument<TArg>(this IValidation validation, [ValidatedNotNull] TArg value, string paramName = null)
         {
             return ArgumentValidation<TArg>.Borrow(paramName, value);
         }
-
 
         /// <summary>
         /// Performs the validation for the current argument.
