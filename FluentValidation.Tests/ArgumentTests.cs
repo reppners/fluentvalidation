@@ -115,7 +115,7 @@ namespace FluentValidation.Tests
         {
             //arrange
             IEnumerable value1 = null;
-            IEnumerable value2 = Helpers.EmptyEnumerable<object>(); //We cannot use Enumerable.Empty<object>(), since it is implemented by an empty array, which is also a collection.
+            IEnumerable value2 = Helpers.EmptyEnumerable(); //We cannot use Enumerable.Empty<object>(), since it is implemented by an empty array, which is also a collection.
             IEnumerable value3 = Enumerable.Range(1, 10);
             IEnumerable value4 = new int[] { }; //collection that should support Count
             IEnumerable value5 = new int[] { 1, 2, 3 }; //collection that should support Count

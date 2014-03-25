@@ -1,6 +1,7 @@
 ﻿
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -31,40 +32,29 @@ namespace FluentValidation.Tests
             Assert.Fail("Expected Exception did not occur.");
         }
 
-        public static IEnumerable<T> EmptyEnumerable<T>()
+        public static IEnumerable EmptyEnumerable()
         {
-            return new EmptyEnumerableImpl<T>();
+            return new EmptyEnumerableImpl();
         }
 
-        class EmptyEnumerableImpl<T> : IEnumerable<T>
+        class EmptyEnumerableImpl : IEnumerable
         {
-            public IEnumerator<T> GetEnumerator()
+            public IEnumerator GetEnumerator()
             {
-                return new EmptyEnumerator<T>();
+                return new EmptyEnumerator();
             }
 
             System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
             {
-                return new EmptyEnumerator<T>();
+                return new EmptyEnumerator();
             }
         }
 
-        class EmptyEnumerator<T> : IEnumerator<T>
+        class EmptyEnumerator : IEnumerator
         {
-
-            public T Current
+            public object Current
             {
-                get { throw new InvalidOperationException(); }
-            }
-
-            public void Dispose()
-            {
-                
-            }
-
-            object System.Collections.IEnumerator.Current
-            {
-                get { throw new InvalidOperationException(); }
+                get { throw new NotImplementedException(); }
             }
 
             public bool MoveNext()
@@ -74,7 +64,7 @@ namespace FluentValidation.Tests
 
             public void Reset()
             {
-                throw new NotSupportedException();
+                throw new NotImplementedException();
             }
         }
     }

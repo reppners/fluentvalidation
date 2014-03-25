@@ -65,18 +65,11 @@ namespace FluentValidation
             else
             {
                 IEnumerator enumerator = enumerable.GetEnumerator();
-                IDisposable disposable = enumerator as IDisposable;
 
-                try
+                using (enumerator as IDisposable)
                 {
-                    if (enumerator.MoveNext()) return false;
+                    return !enumerator.MoveNext();
                 }
-                finally
-                {
-                    if (disposable != null) disposable.Dispose();
-                }
-
-                return true;
             }
         }
     }
