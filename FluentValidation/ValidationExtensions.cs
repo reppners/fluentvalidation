@@ -12,7 +12,7 @@ namespace FluentValidation
     {
         #region Supporting Extensions
 
-        internal static bool AcceptCall(this Validation validation)
+        internal static bool AcceptCall([ValidatedNotNull] this Validation validation)
         {
             if (validation == null) return true;
 

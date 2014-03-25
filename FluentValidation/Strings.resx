@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Argument_ConvertStringFail" xml:space="preserve">
-    <value>'{0}' value must be convertable to type '{1}'.</value>
+    <value>'{0}' value must be convertible to type '{1}'.</value>
   </data>
   <data name="Argument_EmptyEnumerable" xml:space="preserve">
     <value>'{0}' must have one or more elements.</value>

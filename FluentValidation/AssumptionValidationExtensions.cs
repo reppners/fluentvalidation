@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 
@@ -17,6 +18,7 @@ namespace FluentValidation
         /// </summary>
         /// <param name="validation">Extensions placeholder. Can be <c>null</c>.</param>
         /// <returns>A null place holder.</returns>
+        [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "validation", Justification = "validation is only a placeholder, but is required to get fluent validation to work as intended")]
         public static AssumptionValidation Assumptions(this IValidation validation)
         {
             return null;
@@ -69,7 +71,9 @@ namespace FluentValidation
         public static AssumptionValidation IsNotNull<T>(this AssumptionValidation validation, Func<T> value)
             where T : class
         {
-            return IsTrue(validation, () => value() != null);
+            if (value == null) throw new ArgumentNullException("value");
+
+            return IsTrueInternal(validation, () => value() != null, null);
         }
 
         /// <summary>
@@ -80,10 +84,13 @@ namespace FluentValidation
         /// <param name="value">The value to be evaluated.</param>
         /// <returns>The current assumptions that is being validated.</returns>
         /// <exception cref="InternalErrorException">Thrown during <see cref="Check(AssumptionValidation)"/> if the value is <c>null</c>.</exception>
+        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Must to allow Nullables to work")]
         public static AssumptionValidation IsNotNull<T>(this AssumptionValidation validation, Func<T?> value)
             where T : struct
         {
-            return IsTrue(validation, () => value().HasValue);
+            if (value == null) throw new ArgumentNullException("value");
+
+            return IsTrueInternal(validation, () => value().HasValue, null);
         }
 
         /// <summary>
@@ -97,7 +104,9 @@ namespace FluentValidation
         public static AssumptionValidation IsNull<T>(this AssumptionValidation validation, Func<T> value)
             where T : class
         {
-            return IsTrue(validation, () => value() == null);
+            if (value == null) throw new ArgumentNullException("value");
+
+            return IsTrueInternal(validation, () => value() == null, null);
         }
 
         /// <summary>
@@ -108,10 +117,13 @@ namespace FluentValidation
         /// <param name="value">The value to be evaluated.</param>
         /// <returns>The current assumptions that is being validated.</returns>
         /// <exception cref="InternalErrorException">Thrown during <see cref="Check(AssumptionValidation)"/> if the value is not <c>null</c>.</exception>
+        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Must to allow Nullables to work")]
         public static AssumptionValidation IsNull<T>(this AssumptionValidation validation, Func<T?> value)
             where T : struct
         {
-            return IsTrue(validation, () => !value().HasValue);
+            if (value == null) throw new ArgumentNullException("value");
+
+            return IsTrueInternal(validation, () => !value().HasValue, null);
         }
 
         /// <summary>
@@ -123,7 +135,9 @@ namespace FluentValidation
         /// <exception cref="InternalErrorException">Thrown during <see cref="Check(AssumptionValidation)"/> if the value is <c>null</c> or empty.</exception>
         public static AssumptionValidation IsNotNullOrEmpty(this AssumptionValidation validation, Func<string> value)
         {
-            return IsTrue(validation, () => !String.IsNullOrEmpty(value()));
+            if (value == null) throw new ArgumentNullException("value");
+
+            return IsTrueInternal(validation, () => !String.IsNullOrEmpty(value()), null);
         }
 
         /// <summary>
@@ -133,28 +147,35 @@ namespace FluentValidation
         /// <param name="enumerable">The enumerable to be evaluated.</param>
         /// <returns>The current assumptions that is being validated.</returns>
         /// <exception cref="InternalErrorException">Thrown during <see cref="Check(AssumptionValidation)"/> if the value is <c>null</c> or empty.</exception>
-        public static AssumptionValidation IsNotNullOrEmpty<T>( this AssumptionValidation validation, Func<T> enumerable)
+        public static AssumptionValidation IsNotNullOrEmpty<T>(this AssumptionValidation validation, Func<T> enumerable)
             where T : IEnumerable
         {
-            return IsTrue(validation, () =>
-            {
-                var value = enumerable();
+            if (enumerable == null) throw new ArgumentNullException("enumerable");
 
-                return value != null && !value.IsEnumEmpty();
-            });
+            return IsTrueInternal(validation,
+                () =>
+                {
+                    var value = enumerable();
+
+                    return value != null && !value.IsEnumEmpty();
+                },
+            null);
         }
 
         /// <summary>
-        /// Checks that the evaluated object is of type T.
+        /// Checks that the evaluated object is of type T.  If value is null, no check is performed.
         /// </summary>
         /// <typeparam name="T">The type that value must be a type of.</typeparam>
         /// <param name="validation">The current assumptions that is being validated.</param>
         /// <param name="value">The object to be evaluated.</param>
         /// <returns>The current assumptions that is being validated.</returns>
         /// <exception cref="InternalErrorException">Thrown during <see cref="Check(AssumptionValidation)"/> if the value is not of type T.</exception>
+        [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification="T is used as a type comparison.  The explicit requirement of specified T is intended")]
         public static AssumptionValidation IsType<T>(this AssumptionValidation validation, Func<object> value)
         {
-            return IsTrue(validation, () => value() is T);
+            if (value == null) return validation;
+
+            return IsTrueInternal(validation, () => value() is T, null);
         }
 
         /// <summary>
@@ -165,10 +186,27 @@ namespace FluentValidation
         /// <param name="message">An optional message to throw with the exception.</param>
         /// <returns>The current assumptions that is being validated.</returns>
         /// <exception cref="InternalErrorException">Thrown during <see cref="Check(AssumptionValidation)"/> if the value is not false.</exception>
-        public static AssumptionValidation IsFalse(this AssumptionValidation validation, Func<bool> condition, string message = null)
+        public static AssumptionValidation IsFalse(this AssumptionValidation validation, Func<bool> condition, string message)
         {
-            return IsTrue(validation, () => !condition());
+            if (condition == null) throw new ArgumentNullException("condition");
+
+            return IsTrueInternal(validation, () => !condition(), message);
         }
+
+        /// <summary>
+        /// Checks that the evaluated bool is false.
+        /// </summary>
+        /// <param name="validation">The current assumptions that is being validated.</param>
+        /// <param name="condition">An expression that must evaluate to false, or it will fail the validation.</param>
+        /// <returns>The current assumptions that is being validated.</returns>
+        /// <exception cref="InternalErrorException">Thrown during <see cref="Check(AssumptionValidation)"/> if the value is not false.</exception>
+        public static AssumptionValidation IsFalse(this AssumptionValidation validation, Func<bool> condition)
+        {
+            if (condition == null) throw new ArgumentNullException("condition");
+
+            return IsTrueInternal(validation, () => !condition(), null);
+        }
+
 
         /// <summary>
         /// Checks that the evaluated bool is true.
@@ -178,7 +216,28 @@ namespace FluentValidation
         /// <param name="message">An optional message to throw with the exception.</param>
         /// <returns>The current assumptions that is being validated.</returns>
         /// <exception cref="InternalErrorException">Thrown during <see cref="Check(AssumptionValidation)"/> if the value is not true.</exception>
-        public static AssumptionValidation IsTrue(this AssumptionValidation validation, Func<bool> condition, string message = null)
+        public static AssumptionValidation IsTrue(this AssumptionValidation validation, Func<bool> condition, string message)
+        {
+            if (condition == null) throw new ArgumentNullException("condition");
+
+            return IsTrueInternal(validation, condition, message);
+        }
+
+        /// <summary>
+        /// Checks that the evaluated bool is true.
+        /// </summary>
+        /// <param name="validation">The current assumptions that is being validated.</param>
+        /// <param name="condition">An expression that must evaluate to true, or it will fail the validation.</param>
+        /// <returns>The current assumptions that is being validated.</returns>
+        /// <exception cref="InternalErrorException">Thrown during <see cref="Check(AssumptionValidation)"/> if the value is not true.</exception>
+        public static AssumptionValidation IsTrue(this AssumptionValidation validation, Func<bool> condition)
+        {
+            if (condition == null) throw new ArgumentNullException("condition");
+
+            return IsTrueInternal(validation, condition, null);
+        }
+
+        static AssumptionValidation IsTrueInternal(AssumptionValidation validation, Func<bool> condition, string message)
         {
             if (validation.AcceptCall())
             {
@@ -200,6 +259,8 @@ namespace FluentValidation
         /// <exception cref="InternalErrorException">Thrown during <see cref="Check(AssumptionValidation)"/> if the service is null.</exception>
         public static AssumptionValidation IsServicePresent<T>(this AssumptionValidation validation, Func<T> service)
         {
+            if (service == null) throw new ArgumentNullException("service");
+
             if (validation.AcceptCall())
             {
                 if (service() == null)
@@ -216,16 +277,6 @@ namespace FluentValidation
 
             return validation;
         }
-
-        /// <summary>
-        /// Obsolete Method. Will be removed in later release.
-        /// </summary>
-        [Obsolete("Use IsServicePresent instead. Will be removed in later release.")]
-        public static AssumptionValidation ServicePresent<T>(this AssumptionValidation validation, Func<T> service)
-        {
-            return IsServicePresent(validation, service);
-        }
-
 
         static void Fail(ref AssumptionValidation validation, string message)
         {

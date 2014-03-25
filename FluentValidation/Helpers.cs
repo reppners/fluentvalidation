@@ -56,16 +56,24 @@ namespace FluentValidation
 
         public static bool IsEnumEmpty(this IEnumerable enumerable)
         {
-            if (enumerable is ICollection)
+            var collection = enumerable as ICollection;
+
+            if (collection != null)
             {
-                return ((ICollection)enumerable).Count == 0;
+                return collection.Count == 0;
             }
             else
             {
-                foreach (object element in enumerable)
+                IEnumerator enumerator = enumerable.GetEnumerator();
+                IDisposable disposable = enumerator as IDisposable;
+
+                try
                 {
-                    //we are here, so there must be elements
-                    return false;
+                    if (enumerator.MoveNext()) return false;
+                }
+                finally
+                {
+                    if (disposable != null) disposable.Dispose();
                 }
 
                 return true;

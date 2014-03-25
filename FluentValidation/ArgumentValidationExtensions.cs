@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -19,11 +20,25 @@ namespace FluentValidation
         /// <typeparam name="TArg">The type of the argument being validated.</typeparam>
         /// <param name="validation">Extensions placeholder. Can be <c>null</c>.</param>
         /// <param name="value">The value of the argument being validated.</param>
-        /// <param name="paramName">The name of the parameter being validated. Optional.</param>
+        /// <param name="parameterName">The name of the parameter being validated. Optional.</param>
         /// <returns>A new <see cref="ArgumentValidation{TArg}"/> instance.</returns>
-        public static ArgumentValidation<TArg> Argument<TArg>(this IValidation validation, [ValidatedNotNull] TArg value, string paramName = null)
+        [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "validation", Justification="validation is only a placeholder, but is required to get fluent validation to work as intended")]
+        public static ArgumentValidation<TArg> Argument<TArg>(this IValidation validation, [ValidatedNotNull] TArg value, string parameterName)
         {
-            return ArgumentValidation<TArg>.Borrow(paramName, value);
+            return ArgumentValidation<TArg>.Borrow(parameterName, value);
+        }
+
+        /// <summary>
+        /// Begins a new Argument validation.
+        /// </summary>
+        /// <typeparam name="TArg">The type of the argument being validated.</typeparam>
+        /// <param name="validation">Extensions placeholder. Can be <c>null</c>.</param>
+        /// <param name="value">The value of the argument being validated.</param>
+        /// <returns>A new <see cref="ArgumentValidation{TArg}"/> instance.</returns>
+        [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "validation", Justification = "validation is only a placeholder, but is required to get fluent validation to work as intended")]
+        public static ArgumentValidation<TArg> Argument<TArg>(this IValidation validation, [ValidatedNotNull] TArg value)
+        {
+            return ArgumentValidation<TArg>.Borrow(null, value);
         }
 
         /// <summary>
@@ -34,11 +49,14 @@ namespace FluentValidation
         /// <returns>A <c>null</c> placeholder.</returns>
         public static IValidation Check<TArg>(this ArgumentValidation<TArg> validation)
         {
-            var exception = validation.BaseCheck();
+            if (validation != null)
+            {
+                var exception = validation.BaseCheck();
 
-            validation.Return();
+                validation.Return();
 
-            if (exception != null) throw exception;
+                if (exception != null) throw exception;
+            }
 
             return null;
         }
@@ -49,6 +67,7 @@ namespace FluentValidation
         /// <typeparam name="TArg">The type of the argument being validated.</typeparam>
         /// <param name="validation">The validation currently being checked.</param>
         /// <returns>The current argument that is being validated.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", MessageId = "0", Justification = "For optimization, and as this is an extension method that should never get called directly, no verification of non-null is necessary")]
         public static ArgumentValidation<TArg> Or<TArg>(this ArgumentValidation<TArg> validation)
         {
             validation.NewClause();
@@ -84,6 +103,7 @@ namespace FluentValidation
         /// <param name="validation">The current argument that is being validated.</param>
         /// <returns>The current argument that is being validated.</returns>
         /// <exception cref="ArgumentNullException">Thrown during <see cref="Check{TArg}(ArgumentValidation{TArg})"/> if the argument is <c>null</c>.</exception>
+        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification="Must to allow Nullables to work")]
         public static ArgumentValidation<TArg?> IsNotNull<TArg>(this ArgumentValidation<TArg?> validation)
             where TArg : struct
         {
@@ -122,6 +142,7 @@ namespace FluentValidation
         /// <param name="validation">The current argument that is being validated.</param>
         /// <returns>The current argument that is being validated.</returns>
         /// <exception cref="ArgumentException">Thrown during <see cref="Check{TArg}(ArgumentValidation{TArg})"/> if the argument is not <c>null</c>.</exception>
+        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Must to allow Nullables to work")]
         public static ArgumentValidation<TArg?> IsNull<TArg>(this ArgumentValidation<TArg?> validation)
             where TArg : struct
         {
@@ -244,6 +265,7 @@ namespace FluentValidation
         /// <param name="validation">The current argument that is being validated.</param>
         /// <param name="conversionResult">The resulting value of the conversion.</param>
         /// <returns>The current argument that is being validated.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "1#", Justification="Must use since Validation object must be returned")]
         public static ArgumentValidation<TArg> CanConvertTo<TArg, T>(this ArgumentValidation<TArg> validation, out T conversionResult)
         {
             conversionResult = default(T);
@@ -280,8 +302,10 @@ namespace FluentValidation
         public static ArgumentValidation<TArg> IsInRange<TArg>(
             this ArgumentValidation<TArg> validation,
             Predicate<TArg> condition,
-            string message = null)
+            string message)
         {
+            if (condition == null) throw new ArgumentNullException("condition");
+
             if (validation.AcceptCall())
             {
                 if (validation.ArgumentValue != null && !condition(validation.ArgumentValue))
@@ -291,6 +315,21 @@ namespace FluentValidation
             }
 
             return validation;
+        }
+
+        /// <summary>
+        /// Checks that the provided condition evaluated to True.  If not, an <see cref="ArgumentOutOfRangeException"/> is thrown.  If the argument is <c>null</c>, this check is ignored.
+        /// </summary>
+        /// <typeparam name="TArg">The type of the argument being validated.</typeparam>
+        /// <param name="validation">The current argument that is being validated.</param>
+        /// <param name="condition">An expression that must evaluate to true, or it will fail the validation.</param>
+        /// <returns>The current argument that is being validated.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown during <see cref="Check{TArg}(ArgumentValidation{TArg})"/> if <paramref name="condition"/> evaluated to false.</exception>
+        public static ArgumentValidation<TArg> IsInRange<TArg>(
+            this ArgumentValidation<TArg> validation,
+            Predicate<TArg> condition)
+        {
+            return IsInRange(validation, condition, null);
         }
 
         /// <summary>
@@ -313,32 +352,6 @@ namespace FluentValidation
         }
 
         /// <summary>
-        /// Obsolete Method. Will be removed in later release. 
-        /// </summary>
-        [Obsolete("Use IsInRange instead. Will be removed in later release.")]
-        public static ArgumentValidation<TArg> Range<TArg>(
-            this ArgumentValidation<TArg> validation,
-            Predicate<TArg> condition,
-            string message = null)
-        {
-            return IsInRange(validation, condition, message);
-        }
-
-
-        /// <summary>
-        /// Obsolete Method. Will be removed in later release.
-        /// </summary>
-        [Obsolete("Use IsInRange instead. Will be removed in later release.")]
-        public static ArgumentValidation<TArg> Range<TArg>(
-            this ArgumentValidation<TArg> validation,
-            Predicate<TArg> condition,
-            string format,
-            params object[] args)
-        {
-            return IsInRange(validation, condition, format, args);
-        }
-
-        /// <summary>
         /// Checks that the provided condition evaluated to True.  If not, an <see cref="ArgumentException"/> is thrown.  If the argument is null, this check is ignored.
         /// </summary>
         /// <typeparam name="TArg">The type of the argument being validated.</typeparam>
@@ -352,6 +365,8 @@ namespace FluentValidation
             Predicate<TArg> condition,
             string message)
         {
+            if (condition == null) throw new ArgumentNullException("condition");
+
             if (validation.AcceptCall())
             {
                 if ( validation.ArgumentValue != null && !condition(validation.ArgumentValue))

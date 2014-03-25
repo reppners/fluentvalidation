@@ -15,11 +15,22 @@ namespace FluentValidation
         /// </summary>
         /// <typeparam name="TArg">The type of the argument being validated.</typeparam>
         /// <param name="value">The value of the argument being validated.</param>
-        /// <param name="paramName">The name of the parameter being validated. Optional.</param>
+        /// <param name="parameterName">The name of the parameter being validated. Optional.</param>
         /// <returns>A new <see cref="ArgumentValidation{TArg}"/> instance.</returns>
-        public static ArgumentValidation<TArg> Argument<TArg>([ValidatedNotNull] TArg value, string paramName = null)
+        public static ArgumentValidation<TArg> Argument<TArg>([ValidatedNotNull] TArg value, string parameterName)
         {
-            return ArgumentValidation<TArg>.Borrow(paramName, value);
+            return ArgumentValidation<TArg>.Borrow(parameterName, value);
+        }
+
+        /// <summary>
+        /// Begins a new Argument validation.
+        /// </summary>
+        /// <typeparam name="TArg">The type of the argument being validated.</typeparam>
+        /// <param name="value">The value of the argument being validated.</param>
+        /// <returns>A new <see cref="ArgumentValidation{TArg}"/> instance.</returns>
+        public static ArgumentValidation<TArg> Argument<TArg>([ValidatedNotNull] TArg value)
+        {
+            return ArgumentValidation<TArg>.Borrow(null, value);
         }
 
         /// <summary>

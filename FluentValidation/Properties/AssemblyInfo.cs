@@ -1,4 +1,6 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
+using System.Resources;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -18,6 +20,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCopyright("Copyright © Nathan Arnott 2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
+
+[assembly: CLSCompliant(true)]
+[assembly: NeutralResourcesLanguage("en-US")]
 
 // Version information for an assembly consists of the following four values:
 //
