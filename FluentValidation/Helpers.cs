@@ -9,7 +9,7 @@ namespace FluentValidation
 {
     static class Helpers
     {
-        public static string FormatError(string format, params object[] arguments)
+        internal static string FormatError(string format, params object[] arguments)
         {
             return String.Format(CultureInfo.CurrentCulture, format, arguments);
         }
@@ -54,7 +54,7 @@ namespace FluentValidation
 #endif
 
 
-        public static bool IsEnumEmpty(this IEnumerable enumerable)
+        internal static bool IsEnumEmpty(this IEnumerable enumerable)
         {
             var collection = enumerable as ICollection;
 
