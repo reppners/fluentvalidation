@@ -97,7 +97,7 @@ namespace FluentValidation {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &apos;String&apos; cannot be empty or contain only white space..
+        ///   Looks up a localized string similar to &apos;String&apos; cannot contain only white space..
         /// </summary>
         internal static string Argument_WhiteSpaceString {
             get {

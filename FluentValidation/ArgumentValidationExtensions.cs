@@ -167,6 +167,7 @@ namespace FluentValidation
         /// <returns>The current argument that is being validated.</returns>
         /// <exception cref="ArgumentNullException">Thrown during<see cref="Check{TArg}(ArgumentValidation{TArg})"/> if the argument is <c>null</c>.</exception>
         /// <exception cref="ArgumentException">Thrown during <see cref="Check{TArg}(ArgumentValidation{TArg})"/> if the string argument is empty.</exception>
+        [Obsolete("Use IsNotNull and IsNotEmpty")]
         public static ArgumentValidation<string> IsNotNullOrEmpty(this ArgumentValidation<string> validation)
         {
             if (validation.AcceptCall())
@@ -187,12 +188,34 @@ namespace FluentValidation
         }
 
         /// <summary>
+        /// Checks that the string argument is not empty. If the argument is <c>null</c>, this check is ignored.
+        /// </summary>
+        /// <param name="validation">The current argument that is being validated.</param>
+        /// <returns>The current argument that is being validated.</returns>
+        /// <exception cref="ArgumentException">Thrown during <see cref="Check{TArg}(ArgumentValidation{TArg})"/> if the string argument is empty.</exception>
+        public static ArgumentValidation<string> IsNotEmpty(this ArgumentValidation<string> validation)
+        {
+            if (validation.AcceptCall() && validation.ArgumentValue != null)
+            {
+                var argVal = validation.ArgumentValue;
+
+                if (argVal.Length == 0)
+                {
+                    validation.SetException(new ArgumentException(Format(Strings.Argument_EmptyString), validation.ParameterName));
+                }
+            }
+
+            return validation;
+        }
+
+        /// <summary>
         /// Checks that the string argument is not null, empty or only white space.
         /// </summary>
         /// <param name="validation">The current argument that is being validated.</param>
         /// <returns>The current argument that is being validated.</returns>
         /// <exception cref="ArgumentNullException">Thrown during <see cref="Check{TArg}(ArgumentValidation{TArg})"/> if the argument is <c>null</c>.</exception>
         /// <exception cref="ArgumentException">Thrown during <see cref="Check{TArg}(ArgumentValidation{TArg})"/> if the string argument is empty or only white space.</exception>
+        [Obsolete("Use IsNotNull, IsNotEmpty, and IsNotWhiteSpace")]
         public static ArgumentValidation<string> IsNotNullOrWhiteSpace(this ArgumentValidation<string> validation)
         {
             if (validation.AcceptCall())
@@ -216,6 +239,25 @@ namespace FluentValidation
             return validation;
         }
 
+        /// <summary>
+        /// Checks that the string argument does not contain only white space. If the argument is <c>null</c>, this check is ignored.
+        /// </summary>
+        /// <param name="validation">The current argument that is being validated.</param>
+        /// <returns>The current argument that is being validated.</returns>
+        /// <exception cref="ArgumentException">Thrown during <see cref="Check{TArg}(ArgumentValidation{TArg})"/> if the string argument is empty or only white space.</exception>
+        public static ArgumentValidation<string> IsNotWhiteSpace(this ArgumentValidation<string> validation)
+        {
+            if (validation.AcceptCall() && validation.ArgumentValue != null)
+            {
+                if (validation.ArgumentValue.IsWhiteSpace())
+                {
+                    validation.SetException(new ArgumentException(Format(Strings.Argument_WhiteSpaceString), validation.ParameterName));
+                }
+            }
+
+            return validation;
+        }
+
         #endregion
 
         #region Enumerable Values
@@ -223,11 +265,12 @@ namespace FluentValidation
         /// <summary>
         /// Checks that the enumerable is not null and that it contains at least 1 element.
         /// </summary>
-        /// <typeparam name="TArg">The type of the argument being validated.  Must implement interface IEnumerable.</typeparam>
+        /// <typeparam name="TArg">The type of the argument being validated. Must implement interface IEnumerable.</typeparam>
         /// <param name="validation">The current argument that is being validated.</param>
         /// <returns>The current argument that is being validated.</returns>
         /// <exception cref="ArgumentNullException">Thrown during <see cref="Check{TArg}(ArgumentValidation{TArg})"/> if the argument is <c>null</c>.</exception>
         /// <exception cref="ArgumentException">Thrown during <see cref="Check{TArg}(ArgumentValidation{TArg})"/> if the enumerable is empty.</exception>
+        [Obsolete("Use IsNotNull and IsNotEmpty")]
         public static ArgumentValidation<TArg> IsNotNullOrEmpty<TArg>(this ArgumentValidation<TArg> validation)
             where TArg : class, IEnumerable
         {
@@ -248,6 +291,28 @@ namespace FluentValidation
 
                 validation.SetException(new ArgumentException(Format(
                     Strings.Argument_EmptyEnumerable, typeof(TArg).Name), validation.ParameterName));
+            }
+
+            return validation;
+        }
+
+        /// <summary>
+        /// Checks that the enumerable it contains at least 1 element. If the argument is <c>null</c>, this check is ignored.
+        /// </summary>
+        /// <typeparam name="TArg">The type of the argument being validated. Must implement interface IEnumerable.</typeparam>
+        /// <param name="validation">The current argument that is being validated.</param>
+        /// <returns>The current argument that is being validated.</returns>
+        /// <exception cref="ArgumentException">Thrown during <see cref="Check{TArg}(ArgumentValidation{TArg})"/> if the enumerable is empty.</exception>
+        public static ArgumentValidation<TArg> IsNotEmpty<TArg>(this ArgumentValidation<TArg> validation)
+            where TArg : class, IEnumerable
+        {
+            if (validation.AcceptCall() && validation.ArgumentValue != null)
+            {
+                if (validation.ArgumentValue.IsEnumEmpty())
+                {
+                    validation.SetException(new ArgumentException(Format(
+                        Strings.Argument_EmptyEnumerable, typeof(TArg).Name), validation.ParameterName));
+                }
             }
 
             return validation;

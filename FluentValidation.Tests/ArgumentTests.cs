@@ -79,7 +79,7 @@ namespace FluentValidation.Tests
 
 
         [TestMethod]
-        public void Argument_ValidateNotNullOrEmptyString()
+        public void Argument_ValidateEmptyString()
         {
             //arrange
             string value1 = null;
@@ -88,30 +88,32 @@ namespace FluentValidation.Tests
             string value4 = "value";
 
             //act
-            Helpers.ExpectException<ArgumentNullException>(() => Validate.Argument(value1).IsNotNullOrEmpty().Check());
-            Helpers.ExpectException<ArgumentException>(() => Validate.Argument(value2).IsNotNullOrEmpty().Check());
-            Validate.Argument(value3).IsNotNullOrEmpty().Check();
-            Validate.Argument(value4).IsNotNullOrEmpty().Check();
+            Validate.Argument(value1).IsNotEmpty().Check(); //nulls are skipped
+            Helpers.ExpectException<ArgumentException>(() => Validate.Argument(value2).IsNotEmpty().Check());
+            Validate.Argument(value3).IsNotEmpty().Check();
+            Validate.Argument(value4).IsNotEmpty().Check();
         }
 
         [TestMethod]
-        public void Argument_ValidateNotNullOrWhiteSpace()
+        public void Argument_ValidateNotWhiteSpace()
         {
             //arrange
             string value1 = null;
             string value2 = "";
-            string value3 = " \t";
-            string value4 = "value";
+            string value3 = " ";
+            string value4 = " \t";
+            string value5 = "value";
 
             //act
-            Helpers.ExpectException<ArgumentNullException>(() => Validate.Argument(value1).IsNotNullOrWhiteSpace().Check());
-            Helpers.ExpectException<ArgumentException>(() => Validate.Argument(value2).IsNotNullOrWhiteSpace().Check());
-            Helpers.ExpectException<ArgumentException>(() => Validate.Argument(value3).IsNotNullOrWhiteSpace().Check());
-            Validate.Argument(value4).IsNotNullOrWhiteSpace().Check();
+            Validate.Argument(value1).IsNotWhiteSpace().Check(); //nulls are skipped
+            Validate.Argument(value2).IsNotWhiteSpace().Check(); //empty strings are skipped
+            Helpers.ExpectException<ArgumentException>(() => Validate.Argument(value3).IsNotWhiteSpace().Check());
+            Helpers.ExpectException<ArgumentException>(() => Validate.Argument(value4).IsNotWhiteSpace().Check());
+            Validate.Argument(value5).IsNotWhiteSpace().Check();
         }
 
         [TestMethod]
-        public void Argument_ValidateNotNullOrEmptyEnumerable()
+        public void Argument_ValidateNotEmptyEnumerable()
         {
             //arrange
             IEnumerable value1 = null;
@@ -121,11 +123,11 @@ namespace FluentValidation.Tests
             IEnumerable value5 = new int[] { 1, 2, 3 }; //collection that should support Count
 
             //act
-            Helpers.ExpectException<ArgumentNullException>(() => Validate.Argument(value1).IsNotNullOrEmpty().Check());
-            Helpers.ExpectException<ArgumentException>(() => Validate.Argument(value2).IsNotNullOrEmpty().Check());
-            Validate.Argument(value3).IsNotNullOrEmpty().Check();
-            Helpers.ExpectException<ArgumentException>(() => Validate.Argument(value4).IsNotNullOrEmpty().Check());
-            Validate.Argument(value5).IsNotNullOrEmpty().Check();
+            Validate.Argument(value1).IsNotEmpty().Check(); //nulls are skipped
+            Helpers.ExpectException<ArgumentException>(() => Validate.Argument(value2).IsNotEmpty().Check());
+            Validate.Argument(value3).IsNotEmpty().Check();
+            Helpers.ExpectException<ArgumentException>(() => Validate.Argument(value4).IsNotEmpty().Check());
+            Validate.Argument(value5).IsNotEmpty().Check();
         }
 
         [TestMethod]
@@ -151,7 +153,6 @@ namespace FluentValidation.Tests
             Validate.Argument(value4).IsInRange(n => n > 0).Check();
             Validate.Argument(value4).IsInRange(n => n < 0, "test {0}", "formatting").Check();
         }
-
 
         [TestMethod]
         public void Argument_ValidateOr()
@@ -188,15 +189,16 @@ namespace FluentValidation.Tests
         public void Argument_ComplexTest()
         {
             //arrange
-            Action success1 = () => ComplexFunction("", " ", 5, null, "A");
-            Action success2 = () => ComplexFunction("asd", "asd ", 15, null, "A");
-            Action success3 = () => ComplexFunction("asd", "asd ", 15, -5, "A");
+            Action success1 = () => ComplexFunction("", null, " ", 5, null, "A");
+            Action success2 = () => ComplexFunction("asd", "test", "asd ", 15, null, "A");
+            Action success3 = () => ComplexFunction("asd", "test", "asd ", 15, -5, "A");
 
-            Action fail1 = () => ComplexFunction(null, " ", 5, null, "A");
-            Action fail2 = () => ComplexFunction("", "", 5, null, "A");
-            Action fail3 = () => ComplexFunction("", " ", 0, null, "A");
-            Action fail4 = () => ComplexFunction("", " ", 5, 5, "A");
-            Action fail5 = () => ComplexFunction("asd", "asd ", 15, -5, "a");
+            Action fail1 = () => ComplexFunction(null, null, " ", 5, null, "A");
+            Action fail2 = () => ComplexFunction("", null, "", 5, null, "A");
+            Action fail3 = () => ComplexFunction("", null, " ", 0, null, "A");
+            Action fail4 = () => ComplexFunction("", null, " ", 5, 5, "A");
+            Action fail5 = () => ComplexFunction("asd", null, "asd ", 15, -5, "a");
+            Action fail6 = () => ComplexFunction("", "", "test", 5, null, "TEST");
 
 
             //act
@@ -209,12 +211,30 @@ namespace FluentValidation.Tests
             Helpers.ExpectException<ArgumentOutOfRangeException>(fail3);
             Helpers.ExpectException<AggregateException>(fail4);
             Helpers.ExpectException<ArgumentException>(fail5);
+            Helpers.ExpectException<ArgumentException>(fail6);
+        }     
+
+        static void ComplexFunction(
+            string cannotBeNullStr,
+            string cannotBeEmptyStr,
+            string cannotBeNullOrEmptyStr, 
+            int mustBeGreaterThanZero, 
+            double? mustBeLessThanZeroOrNull, 
+            string mustBeAllCaps)
+        {
+            Validate.Argument(cannotBeNullStr, "cannotBeNullStr").IsNotNull().Check()
+                    .Argument(cannotBeEmptyStr, "cannotBeEmptyStr").IsNotEmpty().Check()
+                    .Argument(cannotBeNullOrEmptyStr, "cannotBeNullOrEmptyStr").IsNotNull().IsNotEmpty().Check()
+                    .Argument(mustBeGreaterThanZero, "mustBeGreaterThanZero").IsInRange(v => v > 0).Check()
+                    .Argument(mustBeLessThanZeroOrNull, "mustBeLessThanZeroOrNull").IsInRange(v => v < 0).Or().IsNull().Check()
+                    .Argument(mustBeAllCaps, "mustBeAllCaps").That(s => s.ToUpper() == s, "Value must be all caps").Check();
+            
         }
 
         [TestMethod]
         public void Argument_FootprintTest()
         {
-            
+
             //set these to zero since previous tests may have moved them.
             ArgumentValidationCounter.Reset();
 
@@ -228,23 +248,6 @@ namespace FluentValidation.Tests
 
             Assert.AreEqual(createCount, ArgumentValidationCounter.CreationCount);
             Assert.AreEqual(0, ArgumentValidationCounter.MissingCount);
-        }
-
-        
-
-        static void ComplexFunction(
-            string cannotBeNullStr, 
-            string cannotBeEmptyStr, 
-            int mustBeGreaterThanZero, 
-            double? mustBeLessThanZeroOrNull, 
-            string mustBeAllCaps)
-        {
-            Validate.Argument(cannotBeNullStr, "cannotBeNullStr").IsNotNull().Check()
-                    .Argument(cannotBeEmptyStr, "cannotBeEmptyStr").IsNotNullOrEmpty().Check()
-                    .Argument(mustBeGreaterThanZero, "mustBeGreaterThanZero").IsInRange(v => v > 0).Check()
-                    .Argument(mustBeLessThanZeroOrNull, "mustBeLessThanZeroOrNull").IsInRange(v => v < 0).Or().IsNull().Check()
-                    .Argument(mustBeAllCaps, "mustBeAllCaps").That(s => s.ToUpper() == s, "Value must be all caps").Check();
-            
         }
 
         [TestMethod]

@@ -38,6 +38,7 @@ namespace FluentValidation
 #endif
 
 #if NET35
+        [Obsolete("Remove once all dependencies are removed")]
         internal static bool IsEmptyOrWhiteSpace(this string value)
         {
             if (value.Length == 0) return true;
@@ -52,7 +53,19 @@ namespace FluentValidation
             return true;
         }
 #endif
+        internal static bool IsWhiteSpace(this string value)
+        {
+            var length = value.Length;
 
+            if (length == 0) return false;
+
+            for (int i = 0; i < length; i++)
+            {
+                if (!Char.IsWhiteSpace(value[i])) return false;
+            }
+
+            return true;
+        }
 
         internal static bool IsEnumEmpty(this IEnumerable enumerable)
         {

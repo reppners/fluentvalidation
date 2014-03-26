@@ -130,7 +130,7 @@
     <value>'{0}' was expected to be null.</value>
   </data>
   <data name="Argument_WhiteSpaceString" xml:space="preserve">
-    <value>'String' cannot be empty or contain only white space.</value>
+    <value>'String' cannot contain only white space.</value>
   </data>
   <data name="DefaultAggregateExceptionMessage" xml:space="preserve">
     <value>Multiple Exceptions Occurred.</value>
