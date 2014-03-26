@@ -73,7 +73,7 @@ Assumptions
 Some Trivia
 ===========
 
-Since certain validations (such as argument and state validations) require a validation object to hold the context information of the check, we use an object pool to minimize the creation of validation objects.  While this produces a slight initial overhead, it won't matter if you make ten or ten million validations, the same few objects are used.  Checks are thread-safe too.
+Since certain validations (such as argument and state validations) require a validation object to hold the context information of the check, we use an object pool to minimize the creation of validation objects.  While this produces a slight initial overhead, it won't matter if you make ten or ten million validations, the same few objects are used.
 
 At most, only one small state object is created when checks do not fail.  This means that a mimial footprint is required unless exceptions are actually thrown.  For assumptions, there is no footprint at all unless a check fails.
 
