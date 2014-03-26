@@ -14,18 +14,23 @@ Argument Validation
 
     static void ComplexFunction(
         string cannotBeEmptyStr, 
+        string cannotBeNullOrEmptyStr,
         int mustBeGreaterThanZero, 
         double? mustBeLessThanZeroOrNull, 
         string mustBeAllCaps)
         {
             Validate.Argument(cannotBeEmptyStr, "cannotBeEmptyStr")
-                        .IsNotNullOrEmpty()
+                        .IsNotEmpty()
+                        .Check()
+                    .Argument(cannotBeNullOrEmptyStr, "cannotBeNullOrEmptyStr")
+                        .IsNotNull()
+                        .IsNotEmpty()
                         .Check()
                     .Argument(mustBeGreaterThanZero, "mustBeGreaterThanZero")
-                        .Range(v => v > 0)
+                        .IsInRange(v => v > 0)
                         .Check()
                     .Argument(mustBeLessThanZeroOrNull, "mustBeLessThanZeroOrNull")
-                        .Range(v => v < 0)
+                        .IsInRange(v => v < 0)
                         .Or()
                         .IsNull()
                         .Check()
@@ -43,11 +48,11 @@ State Validation
 
     //Using an IDisposedObservable 
     IDisposedObservable disposableInstance = new SomeDisposableObject();
-    Validate.State(disposableInstance).NotDisposed().Check();
+    Validate.State(disposableInstance).IsNotDisposed().Check();
     
     //Using a standard IDisposable
     IDisposable disposableInstance = new SomeDisposableObject();
-    Validate.State(disposableInstance).NotDisposed(o => o.SomeDisposedFlag == false).Check();
+    Validate.State(disposableInstance).IsNotDisposed(o => o.SomeDisposedFlag == false).Check();
     
 Assumptions
 -----------
@@ -62,7 +67,7 @@ Assumptions
         .IsNotNullOrEmpty("d")
         .IsNotNullOrEmpty(new int[] { 1, 2, 3 })
         .Is<string>(someStringInstance)
-        .ServicePresent(someServiceInstance)
+        .IsServicePresent(someServiceInstance)
         .Check();
         
 Some Trivia
