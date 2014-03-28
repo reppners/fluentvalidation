@@ -2,15 +2,13 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>FluentValidationNA</id>
-        <version>0.0.7</version>
+        <version>1.0.8</version>
         <title>Fluent Validation Library</title>
         <authors>Nathan Arnott</authors>
         <projectUrl>https://github.com/NArnott/fluentvalidation</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>A fluent API for input, state and assumption validation.</description>
-        <releaseNotes>v0.0.7 Hotfix for bug with CA1062 warnings.
-v0.0.6 Naming convensions updated, old ones marked obsolete. Added fix to clear out CA1062 warnings.
-v0.0.5 Fixes bug when using OR with Assumptions in certain cases.</releaseNotes>
+        <releaseNotes>First Major Release</releaseNotes>
         <copyright>Copyright (c) Nathan Arnott 2014</copyright>
         <language>en-US</language>
         <tags>Validation InputValidation IntegrityCheck FluentValidation</tags>

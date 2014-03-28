@@ -14,12 +14,17 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 [assembly: AssemblyTitle("Fluent Validation")]
 [assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Nathan Arnott")]
 [assembly: AssemblyProduct("FluentValidation")]
 [assembly: AssemblyCopyright("Copyright © Nathan Arnott 2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
+
+#if NET35
+[assembly: AssemblyConfiguration("Net35")]
+#else
+[assembly: AssemblyConfiguration("Portable")]
+#endif
 
 [assembly: CLSCompliant(true)]
 [assembly: NeutralResourcesLanguage("en-US")]
@@ -34,5 +39,4 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("0.0.7.*")]
-[assembly: AssemblyFileVersion("0.0.7")]
+[assembly: AssemblyVersion("1.0.8.*")]
