@@ -297,7 +297,7 @@ namespace FluentValidation
         }
 
         /// <summary>
-        /// Checks that the enumerable it contains at least 1 element. If the argument is <c>null</c>, this check is ignored.
+        /// Checks that the enumerable contains at least 1 element. If the argument is <c>null</c>, this check is ignored.
         /// </summary>
         /// <typeparam name="TArg">The type of the argument being validated. Must implement interface IEnumerable.</typeparam>
         /// <param name="validation">The current argument that is being validated.</param>
