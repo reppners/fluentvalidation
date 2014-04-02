@@ -21,6 +21,9 @@ namespace FluentValidation.Tests
                                   .IsNull(() => (int?)null)
                                   .IsNotNull(() => (int?)5)
 
+                                  .IsDefault(() => 0)
+                                  .IsNotDefault(() => 1)
+
                                   .IsNotNullOrEmpty(() => "d")
                                   .IsNotNullOrEmpty(() => new int[] { 1, 2, 3 })
 
@@ -49,6 +52,9 @@ namespace FluentValidation.Tests
 
             Helpers.ExpectException<InternalErrorException>(() => Validate.Assumptions().IsNull(() => (int?)5).Check());
             Helpers.ExpectException<InternalErrorException>(() => Validate.Assumptions().IsNotNull(() => (int?)null).Check());
+
+            Helpers.ExpectException<InternalErrorException>(() => Validate.Assumptions().IsDefault(() => 5).Check());
+            Helpers.ExpectException<InternalErrorException>(() => Validate.Assumptions().IsNotDefault(() => 0).Check());
 
             Helpers.ExpectException<InternalErrorException>(() => Validate.Assumptions().IsNotNullOrEmpty(() => (string)null).Check());
             Helpers.ExpectException<InternalErrorException>(() => Validate.Assumptions().IsNotNullOrEmpty(() => "").Check());

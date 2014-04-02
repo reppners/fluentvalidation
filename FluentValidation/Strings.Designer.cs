@@ -88,6 +88,24 @@ namespace FluentValidation {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &apos;{0}&apos; was expected to not be empty..
+        /// </summary>
+        internal static string Argument_EmptyValue {
+            get {
+                return ResourceManager.GetString("Argument_EmptyValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &apos;{0}&apos; was expected to be empty..
+        /// </summary>
+        internal static string Argument_NotEmptyValue {
+            get {
+                return ResourceManager.GetString("Argument_NotEmptyValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &apos;{0}&apos; was expected to be null..
         /// </summary>
         internal static string Argument_NotNullValue {

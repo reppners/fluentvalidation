@@ -76,7 +76,7 @@ namespace FluentValidation
         }
 
 
-        #region Null Values
+        #region Null/Empty Values
 
         /// <summary>
         /// Checks that the argument is not null.
@@ -151,6 +151,46 @@ namespace FluentValidation
                 if (validation.ArgumentValue != null)
                     validation.SetException(new ArgumentException(
                         Format(Strings.Argument_NotNullValue, typeof(TArg).Name), validation.ParameterName));
+            }
+
+            return validation;
+        }
+
+        /// <summary>
+        /// Checks that the argument is not its default value.
+        /// </summary>
+        /// <typeparam name="TArg">The type of the argument being validated.</typeparam>
+        /// <param name="validation">The current argument that is being validated.</param>
+        /// <returns>The current argument that is being validated.</returns>
+        /// <exception cref="ArgumentException">Thrown during <see cref="Check{TArg}(ArgumentValidation{TArg})"/> if the argument is its default value.</exception>
+        public static ArgumentValidation<TArg> IsNotDefault<TArg>(this ArgumentValidation<TArg> validation)
+            where TArg : struct
+        {
+            if (validation.AcceptCall())
+            {
+                if (Object.Equals(validation.ArgumentValue, default(TArg)))
+                    validation.SetException(new ArgumentException(
+                        Format(Strings.Argument_EmptyValue, typeof(TArg).Name), validation.ParameterName));
+            }
+
+            return validation;
+        }
+
+        /// <summary>
+        /// Checks that the argument is its default value.
+        /// </summary>
+        /// <typeparam name="TArg">The type of the argument being validated.</typeparam>
+        /// <param name="validation">The current argument that is being validated.</param>
+        /// <returns>The current argument that is being validated.</returns>
+        /// <exception cref="ArgumentException">Thrown during <see cref="Check{TArg}(ArgumentValidation{TArg})"/> if the argument is not its default value.</exception>
+        public static ArgumentValidation<TArg> IsDefault<TArg>(this ArgumentValidation<TArg> validation)
+            where TArg : struct
+        {
+            if (validation.AcceptCall())
+            {
+                if (!Object.Equals(validation.ArgumentValue, default(TArg)))
+                    validation.SetException(new ArgumentException(
+                        Format(Strings.Argument_NotEmptyValue, typeof(TArg).Name), validation.ParameterName));
             }
 
             return validation;

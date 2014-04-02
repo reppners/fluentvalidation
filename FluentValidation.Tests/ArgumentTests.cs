@@ -58,6 +58,30 @@ namespace FluentValidation.Tests
         }
 
         [TestMethod]
+        public void Argument_ValidateIsNotDefault()
+        {
+            //arrange
+            int value1 = 0;
+            int value2 = 1;
+
+            //act
+            Helpers.ExpectException<ArgumentException>(() => Validate.Argument(value1).IsNotDefault().Check());
+            Validate.Argument(value2).IsNotDefault().Check();
+        }
+
+        [TestMethod]
+        public void Argument_ValidateIsDefault()
+        {
+            //arrange
+            int value1 = 1;
+            int value2 = 0;
+
+            //act
+            Helpers.ExpectException<ArgumentException>(() => Validate.Argument(value1).IsDefault().Check());
+            Validate.Argument(value2).IsDefault().Check();
+        }
+
+        [TestMethod]
         public void Argument_ValidateNull()
         {
             //arrange

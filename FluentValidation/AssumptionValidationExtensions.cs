@@ -127,6 +127,38 @@ namespace FluentValidation
         }
 
         /// <summary>
+        /// Checks that the evaluated result is not its default value.
+        /// </summary>
+        /// <typeparam name="T">The type to be evaluated.</typeparam>
+        /// <param name="validation">The current assumptions that is being validated.</param>
+        /// <param name="value">The value to be evaluated.</param>
+        /// <returns>The current assumptions that is being validated.</returns>
+        /// <exception cref="InternalErrorException">Thrown during <see cref="Check(AssumptionValidation)"/> if the value is its default value.</exception>
+        public static AssumptionValidation IsNotDefault<T>(this AssumptionValidation validation, Func<T> value)
+            where T : struct
+        {
+            if (value == null) throw new ArgumentNullException("value");
+
+            return IsTrueInternal(validation, () => !Object.Equals(value(), default(T)), null);
+        }
+
+        /// <summary>
+        /// Checks that the evaluated result is its default value.
+        /// </summary>
+        /// <typeparam name="T">The type to be evaluated.</typeparam>
+        /// <param name="validation">The current assumptions that is being validated.</param>
+        /// <param name="value">The value to be evaluated.</param>
+        /// <returns>The current assumptions that is being validated.</returns>
+        /// <exception cref="InternalErrorException">Thrown during <see cref="Check(AssumptionValidation)"/> if the value is not its default value.</exception>
+        public static AssumptionValidation IsDefault<T>(this AssumptionValidation validation, Func<T> value)
+            where T : struct
+        {
+            if (value == null) throw new ArgumentNullException("value");
+
+            return IsTrueInternal(validation, () => Object.Equals(value(), default(T)), null);
+        }
+
+        /// <summary>
         /// Checks that the evaluated string is not null or empty.
         /// </summary>
         /// <param name="validation">The current assumptions that is being validated.</param>
