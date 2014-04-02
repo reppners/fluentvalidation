@@ -139,7 +139,7 @@ namespace FluentValidation
         {
             if (value == null) throw new ArgumentNullException("value");
 
-            return IsTrueInternal(validation, () => !Object.Equals(value(), default(T)), null);
+            return IsTrueInternal(validation, () => !value().Equals(default(T)), null);
         }
 
         /// <summary>
@@ -155,7 +155,7 @@ namespace FluentValidation
         {
             if (value == null) throw new ArgumentNullException("value");
 
-            return IsTrueInternal(validation, () => Object.Equals(value(), default(T)), null);
+            return IsTrueInternal(validation, () => value().Equals(default(T)), null);
         }
 
         /// <summary>

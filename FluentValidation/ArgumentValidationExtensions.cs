@@ -168,7 +168,7 @@ namespace FluentValidation
         {
             if (validation.AcceptCall())
             {
-                if (Object.Equals(validation.ArgumentValue, default(TArg)))
+                if (validation.ArgumentValue.Equals(default(TArg)))
                     validation.SetException(new ArgumentException(
                         Format(Strings.Argument_EmptyValue, typeof(TArg).Name), validation.ParameterName));
             }
@@ -188,7 +188,7 @@ namespace FluentValidation
         {
             if (validation.AcceptCall())
             {
-                if (!Object.Equals(validation.ArgumentValue, default(TArg)))
+                if (!validation.ArgumentValue.Equals(default(TArg)))
                     validation.SetException(new ArgumentException(
                         Format(Strings.Argument_NotEmptyValue, typeof(TArg).Name), validation.ParameterName));
             }
