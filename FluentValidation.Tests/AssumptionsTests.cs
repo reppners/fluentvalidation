@@ -9,29 +9,35 @@ namespace FluentValidation.Tests
     [TestClass]
     public class AssumptionsTests
     {
+        [TestInitialize]
+        public void Initialize()
+        {
+            Validation.OutstandingValidationsDetected = false;
+        }
+
         [TestMethod]
         public void Assumptions_Positive()
         {
-            Validate.Assumptions().IsTrue(() => true)
-                                  .IsFalse(() => false)
+            Validate.Assumptions().IsTrue(true)
+                                  .IsFalse(false)
 
-                                  .IsNull(() => (string)null)
-                                  .IsNotNull(() => "")
+                                  .IsNull((string)null)
+                                  .IsNotNull("")
 
-                                  .IsNull(() => (int?)null)
-                                  .IsNotNull(() => (int?)5)
+                                  .IsNull((int?)null)
+                                  .IsNotNull((int?)5)
 
-                                  .IsDefault(() => 0)
-                                  .IsNotDefault(() => 1)
+                                  .IsDefault(0)
+                                  .IsNotDefault(1)
 
-                                  .IsNotNullOrEmpty(() => "d")
-                                  .IsNotNullOrEmpty(() => new int[] { 1, 2, 3 })
+                                  .IsNotNullOrEmpty("d")
+                                  .IsNotNullOrEmpty(new int[] { 1, 2, 3 })
 
-                                  .IsType<string>(() => "test")
+                                  .IsType<string>("test")
 
-                                  .IsServicePresent(() => "test")
+                                  .IsServicePresent("test")
 #if !NET35
-                                  .IsServicePresent(() => new Lazy<string>( () => "test"))
+                                  .IsServicePresent(new Lazy<string>( () => "test"))
 #endif
 
                                   .Check()
@@ -44,38 +50,31 @@ namespace FluentValidation.Tests
         [TestMethod]
         public void Assumptions_Negative()
         {
-            Helpers.ExpectException<InternalErrorException>(() => Validate.Assumptions().IsTrue(() => false).Check());
-            Helpers.ExpectException<InternalErrorException>(() => Validate.Assumptions().IsFalse(() => true).Check());
+            Helpers.ExpectException<InternalErrorException>(() => Validate.Assumptions().IsTrue(false).Check());
+            Helpers.ExpectException<InternalErrorException>(() => Validate.Assumptions().IsFalse(true).Check());
 
-            Helpers.ExpectException<InternalErrorException>(() => Validate.Assumptions().IsNull(() => "").Check());
-            Helpers.ExpectException<InternalErrorException>(() => Validate.Assumptions().IsNotNull(() => (string)null).Check());
+            Helpers.ExpectException<InternalErrorException>(() => Validate.Assumptions().IsNull("").Check());
+            Helpers.ExpectException<InternalErrorException>(() => Validate.Assumptions().IsNotNull((string)null).Check());
 
-            Helpers.ExpectException<InternalErrorException>(() => Validate.Assumptions().IsNull(() => (int?)5).Check());
-            Helpers.ExpectException<InternalErrorException>(() => Validate.Assumptions().IsNotNull(() => (int?)null).Check());
+            Helpers.ExpectException<InternalErrorException>(() => Validate.Assumptions().IsNull((int?)5).Check());
+            Helpers.ExpectException<InternalErrorException>(() => Validate.Assumptions().IsNotNull((int?)null).Check());
 
-            Helpers.ExpectException<InternalErrorException>(() => Validate.Assumptions().IsDefault(() => 5).Check());
-            Helpers.ExpectException<InternalErrorException>(() => Validate.Assumptions().IsNotDefault(() => 0).Check());
+            Helpers.ExpectException<InternalErrorException>(() => Validate.Assumptions().IsDefault(5).Check());
+            Helpers.ExpectException<InternalErrorException>(() => Validate.Assumptions().IsNotDefault(0).Check());
 
-            Helpers.ExpectException<InternalErrorException>(() => Validate.Assumptions().IsNotNullOrEmpty(() => (string)null).Check());
-            Helpers.ExpectException<InternalErrorException>(() => Validate.Assumptions().IsNotNullOrEmpty(() => "").Check());
-            Helpers.ExpectException<InternalErrorException>(() => Validate.Assumptions().IsNotNullOrEmpty(() => (int[])null).Check());
-            Helpers.ExpectException<InternalErrorException>(() => Validate.Assumptions().IsNotNullOrEmpty(() => new int[0]).Check());
+            Helpers.ExpectException<InternalErrorException>(() => Validate.Assumptions().IsNotNullOrEmpty((string)null).Check());
+            Helpers.ExpectException<InternalErrorException>(() => Validate.Assumptions().IsNotNullOrEmpty("").Check());
+            Helpers.ExpectException<InternalErrorException>(() => Validate.Assumptions().IsNotNullOrEmpty((int[])null).Check());
+            Helpers.ExpectException<InternalErrorException>(() => Validate.Assumptions().IsNotNullOrEmpty(new int[0]).Check());
 
-            Helpers.ExpectException<InternalErrorException>(() => Validate.Assumptions().IsType<string>(() => 5).Check());
+            Helpers.ExpectException<InternalErrorException>(() => Validate.Assumptions().IsType<string>(5).Check());
 
-            Helpers.ExpectException<InternalErrorException>(() => Validate.Assumptions().IsServicePresent(() => (string)null).Check());
+            Helpers.ExpectException<InternalErrorException>(() => Validate.Assumptions().IsServicePresent((string)null).Check());
 
             #if !NET35
-            Helpers.ExpectException<InternalErrorException>(() => Validate.Assumptions().IsServicePresent(() => (Lazy<string>)null).Check());
+            Helpers.ExpectException<InternalErrorException>(() => Validate.Assumptions().IsServicePresent((Lazy<string>)null).Check());
             #endif
         }
 
-        [TestMethod]
-        public void Assumptions_Or()
-        {
-            Validate.Assumptions().IsTrue(() => true).Or().IsTrue(() => true).Check();
-            Validate.Assumptions().IsTrue(() => false).Or().IsTrue(() => true).Check();
-            Validate.Assumptions().IsTrue(() => true).Or().IsTrue(() => false).Check();
-        }
     }
 }

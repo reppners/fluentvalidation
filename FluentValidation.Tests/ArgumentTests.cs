@@ -2,12 +2,19 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections;
 using System.Linq;
+using System.Threading;
 
 namespace FluentValidation.Tests
 {
     [TestClass]
     public class ArgumentTests
     {
+        [TestInitialize]
+        public void Initialize()
+        {
+            Validation.OutstandingValidationsDetected = false;
+        }
+
         [TestMethod]
         public void Argument_ValidateCoreArgument()
         {
@@ -35,6 +42,29 @@ namespace FluentValidation.Tests
             Assert.AreEqual(Arg4, valObj4.ArgumentValue);
 
             Assert.AreEqual(" ", valObj5.ParameterName);
+        }
+
+        [TestMethod]
+        public void Argument_ValidateCheckCalled()
+        {
+            Assert.IsFalse(Validation.OutstandingValidationsDetected);
+
+            //arrange
+            Action action1 = () => Validate.Argument(0).IsDefault();
+            Action action2 = () => Validate.Argument(1).IsDefault();
+
+            //act
+            action1();
+            action2();
+
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+
+
+            //Assert
+            Assert.IsTrue(Validation.OutstandingValidationsDetected);
+
+            Helpers.ExpectException<FailedToCheckValidationException>(() => Validate.Argument(""));
         }
 
         [TestMethod]
@@ -179,24 +209,6 @@ namespace FluentValidation.Tests
         }
 
         [TestMethod]
-        public void Argument_ValidateOr()
-        {
-            //arrange
-            string value1 = null;
-            string value2 = "";
-            string value3 = "value";
-
-            //act
-            Validate.Argument(value1).IsNull().Or().IsNotNull().Check();
-            Validate.Argument(value2).IsNull().Or().IsNotNull().Check();
-            Validate.Argument(value3).IsNull().Or().IsNotNull().Check();
-
-            Validate.Argument(value1).IsNull().Or().IsNull().Check();
-            Validate.Argument(value1).IsNull().Or().IsNotNull().Check();
-            Validate.Argument(value1).IsNotNull().Or().IsNull().Check();
-        }
-
-        [TestMethod]
         public void Argument_That()
         { 
             var value1 = 5;
@@ -210,21 +222,37 @@ namespace FluentValidation.Tests
 
 
         [TestMethod]
+        public void Argument_CheckAll()
+        {
+            //Arrange
+            Action singleFailCheck = () => Validate.Argument((string)null).IsNotNull().Check();
+            Action multiFailCheck = () => Validate.Argument(" ").IsNull().IsNotWhiteSpace().Check();
+
+            Action singleFailCheckAll = () => Validate.Argument((string)null).IsNotNull().CheckAll();
+            Action multiFailCheckAll = () => Validate.Argument(" ").IsNull().IsNotWhiteSpace().CheckAll();
+
+
+            //Act
+            Helpers.ExpectException<ArgumentNullException>(singleFailCheck);
+            Helpers.ExpectException<ArgumentException>(multiFailCheck);
+            Helpers.ExpectException<ArgumentNullException>(singleFailCheckAll);
+            Helpers.ExpectException<AggregateException>(multiFailCheckAll);
+        }
+
+        [TestMethod]
         public void Argument_ComplexTest()
         {
             //arrange
-            Action success1 = () => ComplexFunction("", null, " ", 5, null, "A");
-            Action success2 = () => ComplexFunction("asd", "test", "asd ", 15, null, "A");
-            Action success3 = () => ComplexFunction("asd", "test", "asd ", 15, -5, "A");
+            Action success1 = () => ComplexFunction("", null, " ", 5, "A");
+            Action success2 = () => ComplexFunction("asd", "test", "asd ", 15, "A");
+            Action success3 = () => ComplexFunction("asd", "test", "asd ", 15, "A");
 
-            Action fail1 = () => ComplexFunction(null, null, " ", 5, null, "A");
-            Action fail2 = () => ComplexFunction("", null, "", 5, null, "A");
-            Action fail3 = () => ComplexFunction("", null, " ", 0, null, "A");
-            Action fail4 = () => ComplexFunction("", null, " ", 5, 5, "A");
-            Action fail5 = () => ComplexFunction("asd", null, "asd ", 15, -5, "a");
-            Action fail6 = () => ComplexFunction("", "", "test", 5, null, "TEST");
-
-
+            Action fail1 = () => ComplexFunction(null, null, " ", 5, "A");
+            Action fail2 = () => ComplexFunction("", null, "", 5, "A");
+            Action fail3 = () => ComplexFunction("", null, " ", 0, "A");
+            Action fail4 = () => ComplexFunction("asd", null, "asd ", 15, "a");
+            Action fail5 = () => ComplexFunction("", "", "test", 5, "TEST");
+            
             //act
             success1();
             success2();
@@ -233,9 +261,8 @@ namespace FluentValidation.Tests
             Helpers.ExpectException<ArgumentNullException>(fail1);
             Helpers.ExpectException<ArgumentException>(fail2);
             Helpers.ExpectException<ArgumentOutOfRangeException>(fail3);
-            Helpers.ExpectException<AggregateException>(fail4);
+            Helpers.ExpectException<ArgumentException>(fail4);
             Helpers.ExpectException<ArgumentException>(fail5);
-            Helpers.ExpectException<ArgumentException>(fail6);
         }     
 
         static void ComplexFunction(
@@ -243,14 +270,12 @@ namespace FluentValidation.Tests
             string cannotBeEmptyStr,
             string cannotBeNullOrEmptyStr, 
             int mustBeGreaterThanZero, 
-            double? mustBeLessThanZeroOrNull, 
             string mustBeAllCaps)
         {
             Validate.Argument(cannotBeNullStr, "cannotBeNullStr").IsNotNull().Check()
                     .Argument(cannotBeEmptyStr, "cannotBeEmptyStr").IsNotEmpty().Check()
                     .Argument(cannotBeNullOrEmptyStr, "cannotBeNullOrEmptyStr").IsNotNull().IsNotEmpty().Check()
                     .Argument(mustBeGreaterThanZero, "mustBeGreaterThanZero").IsInRange(v => v > 0).Check()
-                    .Argument(mustBeLessThanZeroOrNull, "mustBeLessThanZeroOrNull").IsInRange(v => v < 0).Or().IsNull().Check()
                     .Argument(mustBeAllCaps, "mustBeAllCaps").That(s => s.ToUpper() == s, "Value must be all caps").Check();
             
         }

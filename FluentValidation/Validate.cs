@@ -19,6 +19,8 @@ namespace FluentValidation
         /// <returns>A new <see cref="ArgumentValidation{TArg}"/> instance.</returns>
         public static ArgumentValidation<TArg> Argument<TArg>([ValidatedNotNull] TArg value, string parameterName)
         {
+            ValidateNoOutstanding();
+
             return ArgumentValidation<TArg>.Borrow(parameterName, value);
         }
 
@@ -30,6 +32,8 @@ namespace FluentValidation
         /// <returns>A new <see cref="ArgumentValidation{TArg}"/> instance.</returns>
         public static ArgumentValidation<TArg> Argument<TArg>([ValidatedNotNull] TArg value)
         {
+            ValidateNoOutstanding();
+
             return ArgumentValidation<TArg>.Borrow(null, value);
         }
 
@@ -41,6 +45,8 @@ namespace FluentValidation
         /// <returns>A new <see cref="StateValidation{T}"/> instance.</returns>
         public static StateValidation<T> State<T>(T objectToValidate)
         {
+            ValidateNoOutstanding();
+
             return StateValidation<T>.Borrow(objectToValidate);
         }
 
@@ -50,7 +56,14 @@ namespace FluentValidation
         /// <returns>A null place holder.</returns>
         public static AssumptionValidation Assumptions()
         {
+            ValidateNoOutstanding();
+
             return null;
+        }
+
+        static void ValidateNoOutstanding()
+        {
+            if (Validation.OutstandingValidationsDetected) throw new FailedToCheckValidationException();
         }
     }
 

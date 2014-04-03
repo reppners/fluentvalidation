@@ -24,41 +24,12 @@ namespace FluentValidation
             return StateValidation<T>.Borrow(objectToValidate);
         }
 
-        /// <summary>
-        /// Performs the validation for the current object.
-        /// </summary>
-        /// <typeparam name="T">The type of the object being validated.</typeparam>
-        /// <param name="validation">The current object validation to check against.</param>
-        /// <returns>A <c>null</c> placeholder.</returns>
-        public static IValidation Check<T>(this StateValidation<T> validation)
+        internal static void SetException<T>(this StateValidation<T> validation, Exception ex)
         {
-            if (validation != null)
-            {
-                var exception = validation.BaseCheck();
-
-                validation.Return();
-
-                if (exception != null) throw exception;
-            }
-
-            return null;
+            validation.SetExceptionInternal(ex);
         }
-
-        /// <summary>
-        /// Allows a check to pass if all validation on the left OR all validations on the right pass.
-        /// </summary>
-        /// <typeparam name="T">The type of the argument being validated.</typeparam>
-        /// <param name="validation">The validation currently being checked.</param>
-        /// <returns>The current object validation to check against.</returns>
-        public static StateValidation<T> Or<T>(this StateValidation<T> validation)
-        {
-            if (validation == null) throw new ArgumentNullException("validation");
-
-            validation.NewClause();
-
-            return validation;
-        }
-
+        
+        
         #region Operation Calls
 
         /// <summary>
@@ -69,17 +40,16 @@ namespace FluentValidation
         /// <param name="condition">An expression that must evaluate to true, or it will fail the validation.</param>
         /// <param name="message">An optional message to throw with the exception.</param>
         /// <returns>The current object validation to check against.</returns>
-        /// <exception cref="InvalidOperationException">Thrown during <see cref="Check{T}(StateValidation{T})"/> if <paramref name="condition"/> evaluated to false.</exception>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="condition"/> is null.</exception>
+        /// <exception cref="InvalidOperationException">Thrown if <paramref name="condition"/> evaluated to false.</exception>
         public static StateValidation<T> Operation<T>(this StateValidation<T> validation, Predicate<T> condition, string message)
         {
+            if (validation == null) throw new ArgumentNullException("validation");
             if (condition == null) throw new ArgumentNullException("condition");
 
-            if (validation.AcceptCall())
+            if (!condition(validation.Object))
             {
-                if (!condition(validation.Object))
-                {
-                    validation.SetException(message == null ? new InvalidOperationException() : new InvalidOperationException(message));
-                }
+                validation.SetException(message == null ? new InvalidOperationException() : new InvalidOperationException(message));
             }
 
             return validation;
@@ -93,7 +63,8 @@ namespace FluentValidation
         /// <param name="validation">The current object validation to check against.</param>
         /// <param name="condition">An expression that must evaluate to true, or it will fail the validation.</param>
         /// <returns>The current object validation to check against.</returns>
-        /// <exception cref="InvalidOperationException">Thrown during <see cref="Check{T}(StateValidation{T})"/> if <paramref name="condition"/> evaluated to false.</exception>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="condition"/> is null.</exception>
+        /// <exception cref="InvalidOperationException">Thrown if <paramref name="condition"/> evaluated to false.</exception>
         public static StateValidation<T> Operation<T>(this StateValidation<T> validation, Predicate<T> condition)
         {
             return Operation(validation, condition, null);
@@ -108,7 +79,8 @@ namespace FluentValidation
         /// <param name="format"> A composite format string.</param>
         /// <param name="args">An object array that contains zero or more objects to format.</param>
         /// <returns>The current object validation to check against.</returns>
-        /// <exception cref="InvalidOperationException">Thrown during <see cref="Check{T}(StateValidation{T})"/> if <paramref name="condition"/> evaluated to false.</exception>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="condition"/> is null.</exception>
+        /// <exception cref="InvalidOperationException">Thrown if <paramref name="condition"/> evaluated to false.</exception>
         public static StateValidation<T> Operation<T>(this StateValidation<T> validation, Predicate<T> condition, string format, params object[] args)
         {
             return Operation(validation, condition, Format(format, args));
@@ -126,22 +98,21 @@ namespace FluentValidation
         /// <param name="condition">An expression that must evaluate to true, or it will fail the validation.</param>
         /// <param name="message">An optional message to throw with the exception.</param>
         /// <returns>The current object validation to check against.</returns>
-        /// <exception cref="ObjectDisposedException">Thrown during <see cref="Check{T}(StateValidation{T})"/> if <paramref name="condition"/> evaluated to false.</exception>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="condition"/> is null.</exception>
+        /// <exception cref="ObjectDisposedException">Thrown if <paramref name="condition"/> evaluated to false.</exception>
         public static StateValidation<T> IsNotDisposed<T>(this StateValidation<T> validation, Predicate<T> condition, string message)
         {
+            if (validation == null) throw new ArgumentNullException("validation");
             if (condition == null) throw new ArgumentNullException("condition");
 
-            if (validation.AcceptCall())
+            if (!condition(validation.Object))
             {
-                if (!condition(validation.Object))
-                {
-                    var objectName = typeof(T).FullName;
+                var objectName = typeof(T).FullName;
 
-                    if (message == null)
-                        validation.SetException(new ObjectDisposedException(objectName));
-                    else
-                        validation.SetException(new ObjectDisposedException(objectName, message));
-                }
+                if (message == null)
+                    validation.SetException(new ObjectDisposedException(objectName));
+                else
+                    validation.SetException(new ObjectDisposedException(objectName, message));
             }
 
             return validation;
@@ -154,7 +125,8 @@ namespace FluentValidation
         /// <param name="validation">The current object validation to check against.</param>
         /// <param name="condition">An expression that must evaluate to true, or it will fail the validation.</param>
         /// <returns>The current object validation to check against.</returns>
-        /// <exception cref="ObjectDisposedException">Thrown during <see cref="Check{T}(StateValidation{T})"/> if <paramref name="condition"/> evaluated to false.</exception>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="condition"/> is null.</exception>
+        /// <exception cref="ObjectDisposedException">Thrown if <paramref name="condition"/> evaluated to false.</exception>
         public static StateValidation<T> IsNotDisposed<T>(this StateValidation<T> validation, Predicate<T> condition)
         {
             return IsNotDisposed(validation, condition, null);
@@ -167,7 +139,7 @@ namespace FluentValidation
         /// <param name="validation">The current object validation to check against.</param>
         /// <param name="message">An optional message to throw with the exception.</param>
         /// <returns>The current object validation to check against.</returns>
-        /// <exception cref="ObjectDisposedException">Thrown during <see cref="Check{T}(StateValidation{T})"/> if the object is disposed.</exception>
+        /// <exception cref="ObjectDisposedException">Thrown if the object is disposed.</exception>
         public static StateValidation<T> IsNotDisposed<T>(this StateValidation<T> validation, string message)
             where T : IDisposedObservable
         {
@@ -180,7 +152,7 @@ namespace FluentValidation
         /// <typeparam name="T">The type of the object being validated. Must implement <see cref="IDisposedObservable"/>.</typeparam>
         /// <param name="validation">The current object validation to check against.</param>
         /// <returns>The current object validation to check against.</returns>
-        /// <exception cref="ObjectDisposedException">Thrown during <see cref="Check{T}(StateValidation{T})"/> if the object is disposed.</exception>
+        /// <exception cref="ObjectDisposedException">Thrown if the object is disposed.</exception>
         public static StateValidation<T> IsNotDisposed<T>(this StateValidation<T> validation)
             where T : IDisposedObservable
         {

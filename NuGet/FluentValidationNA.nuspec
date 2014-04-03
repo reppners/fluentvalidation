@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+<package xmlns="http://schemas.microsoft.com/packaging/2011/10/nuspec.xsd">
     <metadata>
         <id>FluentValidationNA</id>
-        <version>1.0.8</version>
+        <version>1.1.9-beta</version>
         <title>Fluent Validation Library</title>
         <authors>Nathan Arnott</authors>
         <projectUrl>https://github.com/NArnott/fluentvalidation</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>A fluent API for input, state and assumption validation.</description>
-        <releaseNotes>First Major Release</releaseNotes>
+        <releaseNotes>1.1 - Removed OR clause and focused on non-exception optimizations.</releaseNotes>
         <copyright>Copyright (c) Nathan Arnott 2014</copyright>
         <language>en-US</language>
         <tags>Validation InputValidation IntegrityCheck FluentValidation</tags>

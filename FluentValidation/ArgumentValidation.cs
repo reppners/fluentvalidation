@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 
@@ -9,14 +10,12 @@ namespace FluentValidation
     /// Provides state information regarding the argument currently being validated.
     /// </summary>
     /// <typeparam name="TArg">The type of the argument being validated.</typeparam>
-    public sealed class ArgumentValidation<TArg> : Validation 
+    public sealed class ArgumentValidation<TArg> : Validation, IPoolReturnable 
     {
         [ThreadStatic]
         static Queue<ArgumentValidation<TArg>> _validationPool;
-        
 
         private ArgumentValidation() { }
-
 
         /// <summary>
         /// The name of the Parameter being validated.
@@ -49,6 +48,7 @@ namespace FluentValidation
 
             valObj.ParameterName = paramName;
             valObj.ArgumentValue = argValue;
+            valObj.SetOutstandingFlag();
 
 #if DEBUG
             ArgumentValidationCounter.AddMissingCount();
@@ -57,12 +57,10 @@ namespace FluentValidation
             return valObj;
         }
 
-        internal void Return()
+        void IPoolReturnable.Return()
         {
             ParameterName = null;
             ArgumentValue = default(TArg);
-
-            Clear();
 
             _validationPool.Enqueue(this);
 

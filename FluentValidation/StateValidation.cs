@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 
@@ -9,8 +10,9 @@ namespace FluentValidation
     /// Provides state information regarding the object currently being validated.
     /// </summary>
     /// <typeparam name="T">The type of the object being validated.</typeparam>
-    public sealed class StateValidation<T> : Validation
+    public sealed class StateValidation<T> : Validation, IPoolReturnable
     {
+
         [ThreadStatic]
         static Queue<StateValidation<T>> _validationPool;
 
@@ -39,15 +41,14 @@ namespace FluentValidation
             }
 
             valObj.Object = obj;
+            valObj.SetOutstandingFlag();
 
             return valObj;
         }
 
-        internal void Return()
+        void IPoolReturnable.Return()
         {
             Object = default(T);
-
-            Clear();
 
             _validationPool.Enqueue(this);
         }

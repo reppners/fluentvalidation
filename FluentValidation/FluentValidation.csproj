@@ -47,9 +47,11 @@
     <None Include="Properties\key.snk" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AggregateException.cs" />
     <Compile Include="ArgumentValidation.cs" />
     <Compile Include="AssumptionValidation.cs" />
     <Compile Include="AssumptionValidationExtensions.cs" />
+    <Compile Include="FailedToCheckValidationException.cs" />
     <Compile Include="Helpers.cs" />
     <Compile Include="IDisposedObservable.cs" />
     <Compile Include="InternalErrorException.cs" />

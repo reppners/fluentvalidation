@@ -149,5 +149,14 @@ namespace FluentValidation {
                 return ResourceManager.GetString("ServiceMissing", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A Validation.Check() was never called. Make sure all Validations end with Check().  The fail to call Check() did not necessarily occur at the location this exception was thrown..
+        /// </summary>
+        internal static string Validation_NoCheck {
+            get {
+                return ResourceManager.GetString("Validation_NoCheck", resourceCulture);
+            }
+        }
     }
 }

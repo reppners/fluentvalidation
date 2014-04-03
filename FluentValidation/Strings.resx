@@ -147,4 +147,7 @@
   <data name="ServiceMissing" xml:space="preserve">
     <value>Cannot find an instance of the '{0}' service.</value>
   </data>
+  <data name="Validation_NoCheck" xml:space="preserve">
+    <value>A Validation.Check() was never called. Make sure all Validations end with Check().  The fail to call Check() did not necessarily occur at the location this exception was thrown.</value>
+  </data>
 </root>

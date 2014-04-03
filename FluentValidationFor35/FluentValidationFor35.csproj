@@ -47,6 +47,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\FluentValidation\AggregateException.cs">
+      <Link>AggregateException.cs</Link>
+    </Compile>
     <Compile Include="..\FluentValidation\ArgumentValidation.cs">
       <Link>ArgumentValidation.cs</Link>
     </Compile>
@@ -58,6 +61,9 @@
     </Compile>
     <Compile Include="..\FluentValidation\AssumptionValidationExtensions.cs">
       <Link>AssumptionValidationExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\FluentValidation\FailedToCheckValidationException.cs">
+      <Link>FailedToCheckValidationException.cs</Link>
     </Compile>
     <Compile Include="..\FluentValidation\Helpers.cs">
       <Link>Helpers.cs</Link>

@@ -7,6 +7,12 @@ namespace FluentValidation.Tests
     [TestClass]
     public class StateTests
     {
+        [TestInitialize]
+        public void Initialize()
+        {
+            Validation.OutstandingValidationsDetected = false;
+        }
+
         [TestMethod]
         public void State_ValidateOperation()
         {
@@ -34,6 +40,28 @@ namespace FluentValidation.Tests
 
             Helpers.ExpectException<ObjectDisposedException>(() => Validate.State(disposed).IsNotDisposed().Check());
             Validate.State(notDisposed).IsNotDisposed().Check();
+        }
+
+        [TestMethod]
+        public void State_ValidateCheckCalled()
+        {
+            Assert.IsFalse(Validation.OutstandingValidationsDetected);
+
+            //arrange
+            Action action = () => Validate.State(new object()).Operation(o => false);
+
+
+            //act
+            action();
+
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+
+
+            //Assert
+            Assert.IsTrue(Validation.OutstandingValidationsDetected);
+
+            Helpers.ExpectException<FailedToCheckValidationException>(() => Validate.State(""));
         }
     }
 }

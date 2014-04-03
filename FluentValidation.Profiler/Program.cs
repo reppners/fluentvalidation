@@ -16,25 +16,20 @@ namespace FluentValidation.Profiler
             for (int i = 0; i < 10000; i++)
             {
                 //SimpleArgumentTest();
-                //OrArgumentTest();
                 SimpleStateTest();
             }
         }
 
         static void SimpleArgumentTest()
         {
-            Validate.Argument("string", "string").That(str => true, "msg").Check();
+            Validate.Argument("string", "string").That(str => true, "msg");
         }
 
         static void SimpleStateTest()
         {
-            Validate.State("test").IsNotDisposed( str => true ).Operation( str => true ).Check();
+            Validate.State("test").IsNotDisposed( str => true ).Operation( str => true );
         }
 
-        static void OrArgumentTest()
-        {
-            Validate.Argument("string", "string").IsNotNull().Or().IsNotNull().Check();
-        }
 
     }
 }

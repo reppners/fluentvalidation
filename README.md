@@ -16,24 +16,21 @@ Argument Validation
         string cannotBeEmptyStr, 
         string cannotBeNullOrEmptyStr,
         int mustBeGreaterThanZero, 
-        double? mustBeLessThanZeroOrNull, 
         string mustBeAllCaps)
         {
             Validate.Argument(cannotBeEmptyStr, "cannotBeEmptyStr")
                         .IsNotEmpty()
                         .Check()
+
                     .Argument(cannotBeNullOrEmptyStr, "cannotBeNullOrEmptyStr")
                         .IsNotNull()
                         .IsNotEmpty()
-                        .Check()
+                        .Check()      //Or call CheckAll() to throw an AggregateException that contains all applicable exceptions.
+
                     .Argument(mustBeGreaterThanZero, "mustBeGreaterThanZero")
                         .IsInRange(v => v > 0)
                         .Check()
-                    .Argument(mustBeLessThanZeroOrNull, "mustBeLessThanZeroOrNull")
-                        .IsInRange(v => v < 0)
-                        .Or()
-                        .IsNull()
-                        .Check()
+
                     .Argument(mustBeAllCaps, "mustBeAllCaps")
                         .That(s => s.ToUpper() == s, "Value must be all caps")
                         .Check();
@@ -70,14 +67,12 @@ Assumptions
         .IsServicePresent(someServiceInstance)
         .Check();
         
-Some Trivia
+Some Points of Interest
 ===========
 
 Since certain validations (such as argument and state validations) require a validation object to hold the context information of the check, we use an object pool to minimize the creation of validation objects.  While this produces a slight initial overhead, it won't matter if you make ten or ten million validations, the same few objects are used.
 
 At most, only one small state object is created when checks do not fail.  This means that a mimial footprint is required unless exceptions are actually thrown.  For assumptions, there is no footprint at all unless a check fails.
-
-Checks are optimized. When you call Check(), once an actual check fails, the rest of the checks are ignored.
 
 
 [1]: https://github.com/AArnott/Validation "Validation"

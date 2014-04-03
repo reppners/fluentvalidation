@@ -11,4 +11,10 @@ namespace FluentValidation
     /// </summary>
     [SuppressMessage("Microsoft.Design", "CA1040:AvoidEmptyInterfaces", Justification="It has to be an empty interface")]
     public interface IValidation { }
+
+
+    interface IPoolReturnable
+    {
+        void Return();
+    }
 }

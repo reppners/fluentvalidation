@@ -70,7 +70,7 @@ namespace FluentValidation.Tests
         public void Assumptions_Threading()
         {
             //arrange
-            Action notNullCheck = () => Validate.Assumptions().IsFalse(() => false).Check();
+            Action notNullCheck = () => Validate.Assumptions().IsFalse(false).Check();
 
             List<Task> tasks = new List<Task>();
 
