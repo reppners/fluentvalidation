@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<package xmlns="http://schemas.microsoft.com/packaging/2011/10/nuspec.xsd">
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>FluentValidationNA</id>
-        <version>1.1.9-beta</version>
+        <version>1.1.13</version>
         <title>Fluent Validation Library</title>
         <authors>Nathan Arnott</authors>
         <projectUrl>https://github.com/NArnott/fluentvalidation</projectUrl>
@@ -16,7 +16,9 @@
     <files>
         <file src="..\FluentValidationFor35\bin\Release\FluentValidation.dll" target="lib\net35\FluentValidation.dll" />
         <file src="..\FluentValidationFor35\bin\Release\FluentValidation.XML" target="lib\net35\FluentValidation.XML" />
-        <file src="..\FluentValidation\bin\Release\FluentValidation.dll" target="lib\portable-net4+sl5+wp8+win8\FluentValidation.dll" />
-        <file src="..\FluentValidation\bin\Release\FluentValidation.XML" target="lib\portable-net4+sl5+wp8+win8\FluentValidation.XML" />
+        <file src="..\FluentValidation\bin\Release\FluentValidation.dll" target="lib\net40\FluentValidation.dll" />
+        <file src="..\FluentValidation\bin\Release\FluentValidation.XML" target="lib\net40\FluentValidation.XML" />
+        <file src="..\FluentValidation\bin\Release\FluentValidation.dll" target="lib\portable-net40+sl50+wp80+win\FluentValidation.dll" />
+        <file src="..\FluentValidation\bin\Release\FluentValidation.XML" target="lib\portable-net40+sl50+wp80+win\FluentValidation.XML" />
     </files>
 </package>
