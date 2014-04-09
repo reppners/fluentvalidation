@@ -12,7 +12,7 @@ namespace FluentValidation.Tests
         [TestInitialize]
         public void Initialize()
         {
-            Validation.OutstandingValidationsDetected = false;
+
         }
 
         [TestMethod]

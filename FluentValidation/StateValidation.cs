@@ -41,7 +41,6 @@ namespace FluentValidation
             }
 
             valObj.Object = obj;
-            valObj.SetOutstandingFlag();
 
             return valObj;
         }

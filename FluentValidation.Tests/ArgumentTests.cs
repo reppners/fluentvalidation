@@ -12,7 +12,7 @@ namespace FluentValidation.Tests
         [TestInitialize]
         public void Initialize()
         {
-            Validation.OutstandingValidationsDetected = false;
+            
         }
 
         [TestMethod]
@@ -42,29 +42,6 @@ namespace FluentValidation.Tests
             Assert.AreEqual(Arg4, valObj4.ArgumentValue);
 
             Assert.AreEqual(" ", valObj5.ParameterName);
-        }
-
-        [TestMethod]
-        public void Argument_ValidateCheckCalled()
-        {
-            Assert.IsFalse(Validation.OutstandingValidationsDetected);
-
-            //arrange
-            Action action1 = () => Validate.Argument(0).IsDefault();
-            Action action2 = () => Validate.Argument(1).IsDefault();
-
-            //act
-            action1();
-            action2();
-
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
-
-
-            //Assert
-            Assert.IsTrue(Validation.OutstandingValidationsDetected);
-
-            Helpers.ExpectException<FailedToCheckValidationException>(() => Validate.Argument(""));
         }
 
         [TestMethod]

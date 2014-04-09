@@ -12,29 +12,10 @@ namespace FluentValidation
     /// </summary>
     public abstract class Validation 
     {
-
-        internal static volatile bool OutstandingValidationsDetected;
-
         List<Exception> _exceptions;
-
-        bool _outstanding = false;
 
         internal Validation()
         {
-        }
-
-        internal void SetOutstandingFlag()
-        {
-            _outstanding = true;
-        }
-        
-        /// <summary>
-        /// 
-        /// </summary>
-        [SuppressMessage("Microsoft.Performance", "CA1821:RemoveEmptyFinalizers")]
-        ~Validation()
-        {
-            if (_exceptions != null || _outstanding) Validation.OutstandingValidationsDetected = true;
         }
 
         internal void SetExceptionInternal(Exception ex)
@@ -54,7 +35,6 @@ namespace FluentValidation
             var ex = _exceptions;
 
             _exceptions = null;
-            _outstanding = false;
 
             return ex;
         }

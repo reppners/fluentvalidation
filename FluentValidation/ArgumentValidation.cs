@@ -48,7 +48,6 @@ namespace FluentValidation
 
             valObj.ParameterName = paramName;
             valObj.ArgumentValue = argValue;
-            valObj.SetOutstandingFlag();
 
 #if DEBUG
             ArgumentValidationCounter.AddMissingCount();
