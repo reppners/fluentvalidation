@@ -8,7 +8,7 @@
     <ProjectGuid>{5AAC8AE9-8FAC-47E2-AD74-94D9979B9B34}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>FluentValidation</RootNamespace>
+    <RootNamespace>FluentValidationNA</RootNamespace>
     <AssemblyName>FluentValidation</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Profile136</TargetFrameworkProfile>

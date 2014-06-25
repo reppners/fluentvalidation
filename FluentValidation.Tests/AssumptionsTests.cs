@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace FluentValidation.Tests
+namespace FluentValidationNA.Tests
 {
     [TestClass]
     public class AssumptionsTests

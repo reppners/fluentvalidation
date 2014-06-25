@@ -5,7 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 
-namespace FluentValidation
+namespace FluentValidationNA
 {
 #if NET35
     /// <summary>

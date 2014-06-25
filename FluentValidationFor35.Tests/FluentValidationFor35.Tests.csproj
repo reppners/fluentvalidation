@@ -6,7 +6,7 @@
     <ProjectGuid>{C6C84290-644E-486D-8BE1-D485672BBD79}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>FluentValidation.Tests</RootNamespace>
+    <RootNamespace>FluentValidationNA.Tests</RootNamespace>
     <AssemblyName>FluentValidationFor35.Tests</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

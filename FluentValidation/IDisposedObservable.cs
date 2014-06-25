@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace FluentValidation
+namespace FluentValidationNA
 {
     /// <summary>
     /// A disposable object that also provides a safe way to query its disposed status.

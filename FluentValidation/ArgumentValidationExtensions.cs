@@ -6,7 +6,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 
-namespace FluentValidation
+namespace FluentValidationNA
 {
     /// <summary>
     /// Provides checks for argument validations.

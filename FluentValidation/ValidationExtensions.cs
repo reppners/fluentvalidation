@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace FluentValidation
+namespace FluentValidationNA
 {
     /// <summary>
     /// Provides common checks for all types of validations.

@@ -4,7 +4,7 @@ using System.Collections;
 using System.Linq;
 using System.Threading;
 
-namespace FluentValidation.Tests
+namespace FluentValidationNA.Tests
 {
     [TestClass]
     public class ArgumentTests

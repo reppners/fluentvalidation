@@ -4,7 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 
-namespace FluentValidation
+namespace FluentValidationNA
 {
     /// <summary>
     /// Provides state information regarding the argument currently being validated.

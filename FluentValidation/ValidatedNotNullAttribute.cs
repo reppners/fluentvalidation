@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace FluentValidation
+namespace FluentValidationNA
 {
     /// <summary>
     /// Indicates to Code Analysis that a method validates a particular parameter.

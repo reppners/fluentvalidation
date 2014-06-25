@@ -2,7 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Telerik.JustMock;
 
-namespace FluentValidation.Tests
+namespace FluentValidationNA.Tests
 {
     [TestClass]
     public class StateTests

@@ -7,7 +7,7 @@
     <ProjectGuid>{087831EB-6849-4C02-939B-19B09AE70514}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>FluentValidation.Profiler</RootNamespace>
+    <RootNamespace>FluentValidationNA.Profiler</RootNamespace>
     <AssemblyName>FluentValidation.Profiler</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

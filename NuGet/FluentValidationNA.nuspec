@@ -2,13 +2,15 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>FluentValidationNA</id>
-        <version>1.1.14</version>
+        <version>1.2.15</version>
         <title>Fluent Validation Library</title>
         <authors>Nathan Arnott</authors>
         <projectUrl>https://github.com/NArnott/fluentvalidation</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>A fluent API for input, state and assumption validation.</description>
-        <releaseNotes>1.1.14 - Removed missing Check() detector as it wasn't helpful, and caused problems.
+        <releaseNotes>1.2.15 - Renamed Namespace so that it would not conflict with another library of the same in the same namespace.
+
+1.1.14 - Removed missing Check() detector as it wasn't helpful, and caused problems.
 
 1.1 - Removed OR clause and focused on non-exception optimizations.</releaseNotes>
         <copyright>Copyright (c) Nathan Arnott 2014</copyright>

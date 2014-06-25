@@ -9,7 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 #endif
 
-namespace FluentValidation.Tests
+namespace FluentValidationNA.Tests
 {
     [TestClass]
     public class MultithreadingTests

@@ -4,7 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 
-namespace FluentValidation
+namespace FluentValidationNA
 {
     /// <summary>
     /// An exception that will be thrown at some point if Check() is not called on validations.

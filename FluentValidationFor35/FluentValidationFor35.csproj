@@ -7,7 +7,7 @@
     <ProjectGuid>{5CE45574-1586-4D92-8217-831C68BEC4BB}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>FluentValidation</RootNamespace>
+    <RootNamespace>FluentValidationNA</RootNamespace>
     <AssemblyName>FluentValidation</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
